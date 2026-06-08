@@ -41,21 +41,33 @@ const copy =
   lang === 'id'
     ? {
         trust: 'Dipercaya oleh ratusan event organizer, perusahaan, dan pasangan di seluruh Jabodetabek',
+        servicesEyebrow: 'Layanan',
         servicesTitle: 'Layanan Kami',
         servicesIntro:
           'Solusi audio visual lengkap dalam satu tangan, mulai dari layar LED, sound system, hingga lighting dan multimedia. Tim teknisi kami menangani semuanya dari awal sampai bongkar pasang.',
+        statsEyebrow: 'Rekam Jejak',
+        statsTitle: 'Angka yang Berbicara',
+        statsIntro:
+          'Pengalaman bertahun-tahun melayani beragam acara di seluruh Jabodetabek dengan kualitas yang konsisten.',
+        statEvents: 'Acara Sukses',
+        statYears: 'Tahun Pengalaman',
+        statClients: 'Klien Puas',
+        equipmentEyebrow: 'Peralatan',
         equipmentTitle: 'Peralatan Unggulan',
         equipmentIntro:
           'Unit terawat dan dikalibrasi rutin, siap untuk acara indoor maupun outdoor. Harga sewa transparan, tanpa biaya tersembunyi.',
         equipmentCta: 'Lihat semua peralatan',
         perDay: '/hari',
+        eventsEyebrow: 'Acara',
         eventsTitle: 'Jenis Acara',
         eventsIntro:
           'Dari konser megah hingga wedding intim, kami punya pengalaman dan perlengkapan untuk setiap momen.',
+        galleryEyebrow: 'Portofolio',
         galleryTitle: 'Lihat Hasil Kerja Kami',
         galleryIntro:
           'Ratusan acara telah kami sukseskan. Jelajahi portofolio kami untuk melihat kualitas instalasi LED screen dan tata panggung Maxindo LED.',
         galleryCta: 'Lihat Portofolio',
+        testimonialsEyebrow: 'Testimoni',
         testimonialsTitle: 'Apa Kata Klien Kami',
         testimonialsIntro:
           'Kepuasan klien adalah prioritas kami. Berikut pengalaman mereka bekerja sama dengan Maxindo LED.',
@@ -66,21 +78,33 @@ const copy =
       }
     : {
         trust: 'Trusted by hundreds of event organizers, companies, and couples across Greater Jakarta',
+        servicesEyebrow: 'Services',
         servicesTitle: 'Our Services',
         servicesIntro:
           'Complete audio visual solutions under one roof, from LED screens and sound systems to lighting and multimedia. Our crew handles everything from planning to teardown.',
+        statsEyebrow: 'Track Record',
+        statsTitle: 'Numbers That Speak',
+        statsIntro:
+          'Years of experience serving a wide range of events across Greater Jakarta with consistent quality.',
+        statEvents: 'Events Delivered',
+        statYears: 'Years of Experience',
+        statClients: 'Happy Clients',
+        equipmentEyebrow: 'Equipment',
         equipmentTitle: 'Featured Equipment',
         equipmentIntro:
           'Well-maintained, regularly calibrated units ready for indoor and outdoor events. Transparent rental pricing with no hidden fees.',
         equipmentCta: 'Browse all equipment',
         perDay: '/day',
+        eventsEyebrow: 'Events',
         eventsTitle: 'Event Types',
         eventsIntro:
           'From grand concerts to intimate weddings, we have the experience and gear for every occasion.',
+        galleryEyebrow: 'Portfolio',
         galleryTitle: 'See Our Work',
         galleryIntro:
           'We have powered hundreds of events. Explore our portfolio to see the quality of Maxindo LED screen installations and stage production.',
         galleryCta: 'View Portfolio',
+        testimonialsEyebrow: 'Testimonials',
         testimonialsTitle: 'What Our Clients Say',
         testimonialsIntro:
           'Client satisfaction is our priority. Here is what they say about working with Maxindo LED.',
@@ -111,50 +135,79 @@ const description = copy.meta;
   <!-- SERVICES -->
   {
     services.length > 0 && (
-      <section class="container-x py-16 md:py-24">
-        <div class="max-w-2xl">
-          <h2 class="text-3xl font-bold md:text-4xl">{copy.servicesTitle}</h2>
-          <p class="mt-4 text-muted">{copy.servicesIntro}</p>
-        </div>
-        <div class="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {services.map((e) => (
-            <ServiceCard
-              href={localizedPath(lang, '/services/' + slugOf(e.id))}
-              title={e.data.name}
-              summary={e.data.description}
-            />
-          ))}
+      <section class="bg-white py-16 md:py-24">
+        <div class="container-x">
+          <div class="flex flex-col items-center text-center">
+            <span class="eyebrow">{copy.servicesEyebrow}</span>
+            <h2 class="section-title mt-4">{copy.servicesTitle}</h2>
+            <p class="lead mx-auto mt-4 max-w-2xl text-center">
+              {copy.servicesIntro}
+            </p>
+          </div>
+          <div class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {services.map((e) => (
+              <ServiceCard
+                href={localizedPath(lang, '/services/' + slugOf(e.id))}
+                title={e.data.name}
+                summary={e.data.description}
+              />
+            ))}
+          </div>
         </div>
       </section>
     )
   }
 
+  <!-- STATS BAND -->
+  <section class="bg-cream py-16 md:py-24">
+    <div class="container-x">
+      <div class="flex flex-col items-center text-center">
+        <span class="eyebrow">{copy.statsEyebrow}</span>
+        <h2 class="section-title mt-4">{copy.statsTitle}</h2>
+        <p class="lead mx-auto mt-4 max-w-2xl text-center">{copy.statsIntro}</p>
+      </div>
+      <div class="mx-auto mt-12 grid max-w-4xl grid-cols-1 gap-6 sm:grid-cols-3">
+        <div class="card flex flex-col items-center p-8 text-center">
+          <span class="text-4xl font-extrabold text-accent md:text-5xl">500+</span>
+          <span class="mt-2 font-semibold text-ink">{copy.statEvents}</span>
+        </div>
+        <div class="card flex flex-col items-center p-8 text-center">
+          <span class="text-4xl font-extrabold text-accent md:text-5xl">10+</span>
+          <span class="mt-2 font-semibold text-ink">{copy.statYears}</span>
+        </div>
+        <div class="card flex flex-col items-center p-8 text-center">
+          <span class="text-4xl font-extrabold text-accent md:text-5xl">100+</span>
+          <span class="mt-2 font-semibold text-ink">{copy.statClients}</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- FEATURED EQUIPMENT -->
   {
     equipment.length > 0 && (
-      <section class="border-y border-white/10 bg-surface/30">
-        <div class="container-x py-16 md:py-24">
-          <div class="flex flex-wrap items-end justify-between gap-4">
-            <div class="max-w-2xl">
-              <h2 class="text-3xl font-bold md:text-4xl">
-                {copy.equipmentTitle}
-              </h2>
-              <p class="mt-4 text-muted">{copy.equipmentIntro}</p>
-            </div>
+      <section class="bg-surface py-16 md:py-24">
+        <div class="container-x">
+          <div class="flex flex-col items-center text-center">
+            <span class="eyebrow">{copy.equipmentEyebrow}</span>
+            <h2 class="section-title mt-4">{copy.equipmentTitle}</h2>
+            <p class="lead mx-auto mt-4 max-w-2xl text-center">
+              {copy.equipmentIntro}
+            </p>
             <a
               href={localizedPath(lang, '/equipment')}
-              class="inline-flex items-center gap-1 text-sm font-semibold text-accent hover:underline"
+              class="mt-6 inline-flex items-center gap-1 text-sm font-semibold text-accent hover:underline"
             >
               {copy.equipmentCta} <span aria-hidden="true">&rarr;</span>
             </a>
           </div>
-          <div class="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div class="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {equipment.map((e) => (
               <a
                 href={localizedPath(lang, '/equipment')}
-                class="group flex flex-col overflow-hidden rounded-xl border border-white/10 bg-surface transition-colors hover:border-accent"
+                class="card group flex flex-col overflow-hidden transition-colors hover:border-accent"
               >
-                <div class="aspect-[4/3] overflow-hidden bg-bg">
+                <div class="aspect-[4/3] overflow-hidden bg-surface">
                   <Image
                     src={e.data.image}
                     alt={e.data.name}
@@ -167,7 +220,7 @@ const description = copy.meta;
                   <span class="text-xs font-medium uppercase tracking-wide text-accent">
                     {e.data.category}
                   </span>
-                  <h3 class="mt-1 font-bold text-white">{e.data.name}</h3>
+                  <h3 class="mt-1 font-bold text-ink">{e.data.name}</h3>
                   <p class="mt-3 text-sm font-semibold text-muted">
                     Rp {e.data.pricePerDay.toLocaleString('id-ID')}
                     {copy.perDay}
@@ -184,71 +237,73 @@ const description = copy.meta;
   <!-- EVENT TYPES -->
   {
     eventTypes.length > 0 && (
-      <section class="container-x py-16 md:py-24">
-        <div class="max-w-2xl">
-          <h2 class="text-3xl font-bold md:text-4xl">{copy.eventsTitle}</h2>
-          <p class="mt-4 text-muted">{copy.eventsIntro}</p>
-        </div>
-        <div class="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {eventTypes.map((e) => (
-            <EventTile
-              href={localizedPath(lang, '/events/' + slugOf(e.id))}
-              title={e.data.name}
-            />
-          ))}
+      <section class="bg-white py-16 md:py-24">
+        <div class="container-x">
+          <div class="flex flex-col items-center text-center">
+            <span class="eyebrow">{copy.eventsEyebrow}</span>
+            <h2 class="section-title mt-4">{copy.eventsTitle}</h2>
+            <p class="lead mx-auto mt-4 max-w-2xl text-center">
+              {copy.eventsIntro}
+            </p>
+          </div>
+          <div class="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {eventTypes.map((e) => (
+              <EventTile
+                href={localizedPath(lang, '/events/' + slugOf(e.id))}
+                title={e.data.name}
+              />
+            ))}
+          </div>
         </div>
       </section>
     )
   }
 
   <!-- GALLERY TEASER -->
-  <section class="border-y border-white/10 bg-surface/30">
-    <div
-      class="container-x flex flex-col items-start gap-6 py-16 md:flex-row md:items-center md:justify-between md:py-24"
-    >
-      <div class="max-w-2xl">
-        <h2 class="text-3xl font-bold md:text-4xl">{copy.galleryTitle}</h2>
-        <p class="mt-4 text-muted">{copy.galleryIntro}</p>
-      </div>
-      <a
-        href={localizedPath(lang, '/portfolio')}
-        class="inline-flex shrink-0 items-center gap-2 rounded-lg border border-white/20 px-5 py-3 text-sm font-semibold text-white transition-colors hover:border-accent hover:text-accent"
-      >
+  <section class="bg-surface py-16 md:py-24">
+    <div class="container-x flex flex-col items-center text-center">
+      <span class="eyebrow">{copy.galleryEyebrow}</span>
+      <h2 class="section-title mt-4">{copy.galleryTitle}</h2>
+      <p class="lead mx-auto mt-4 max-w-2xl text-center">{copy.galleryIntro}</p>
+      <a href={localizedPath(lang, '/portfolio')} class="btn-ghost mt-8">
         {copy.galleryCta} <span aria-hidden="true">&rarr;</span>
       </a>
     </div>
   </section>
 
   <!-- TESTIMONIALS -->
-  <section class="container-x py-16 md:py-24">
-    <div class="max-w-2xl">
-      <h2 class="text-3xl font-bold md:text-4xl">{copy.testimonialsTitle}</h2>
-      <p class="mt-4 text-muted">{copy.testimonialsIntro}</p>
-    </div>
-    <div class="mt-10">
-      <Testimonials lang={lang} />
+  <section class="bg-white py-16 md:py-24">
+    <div class="container-x">
+      <div class="flex flex-col items-center text-center">
+        <span class="eyebrow">{copy.testimonialsEyebrow}</span>
+        <h2 class="section-title mt-4">{copy.testimonialsTitle}</h2>
+        <p class="lead mx-auto mt-4 max-w-2xl text-center">
+          {copy.testimonialsIntro}
+        </p>
+      </div>
+      <div class="mt-12">
+        <Testimonials lang={lang} />
+      </div>
     </div>
   </section>
 
   <!-- FINAL CTA BAND -->
-  <section class="border-t border-white/10">
-    <div class="container-x py-16 md:py-24">
+  <section class="bg-white py-16 md:py-24">
+    <div class="container-x">
       <div
-        class="relative overflow-hidden rounded-2xl border border-white/10 bg-surface p-8 md:p-14"
+        class="relative overflow-hidden rounded-[2rem] border border-line bg-cream p-8 text-center md:p-16"
       >
         <div
           aria-hidden="true"
           class="pointer-events-none absolute -top-24 -right-16 h-72 w-72 rounded-full bg-accent-grad opacity-20 blur-3xl"
         >
         </div>
-        <div class="relative max-w-2xl">
-          <h2
-            class="bg-accent-grad bg-clip-text text-3xl font-extrabold text-transparent md:text-4xl"
-          >
+        <div class="relative mx-auto max-w-2xl">
+          <h2 class="section-title text-ink">
             {copy.ctaTitle}
           </h2>
-          <p class="mt-4 text-muted">{copy.ctaIntro}</p>
-          <div class="mt-8">
+          <p class="lead mx-auto mt-4 max-w-xl text-center">{copy.ctaIntro}</p>
+          <div class="mt-8 flex justify-center">
             <WhatsAppButton lang={lang} message={ctaMessage} />
           </div>
         </div>

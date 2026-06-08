@@ -1,48 +1,53 @@
 @import "tailwindcss";
 
+/* ---- Design tokens (Staffinc-style: light, amber accent, rounded) ---- */
 @theme {
-  --color-bg: #0a0e1a;
-  --color-surface: #111827;
-  --color-muted: #94a3b8;
-  --color-accent: #06b6d4;
-  --color-accent-2: #3b82f6;
+  --color-bg: #ffffff;
+  --color-surface: #f6f8fb;   /* cool light section / card bg */
+  --color-cream: #fff7ec;     /* warm light section bg */
+  --color-ink: #1f242e;       /* headings */
+  --color-body: #56606f;      /* body text */
+  --color-muted: #8a97a6;     /* muted text */
+  --color-line: #e9edf2;      /* borders */
+  --color-accent: #feb022;    /* amber (brand) */
+  --color-accent-2: #f3992a;  /* deeper amber */
+  --color-dark: #1c1f27;      /* near-black for primary buttons */
   --color-whatsapp: #25d366;
   --font-sans: ui-sans-serif, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --radius-card: 1.25rem;
 }
 
-:root {
-  color-scheme: dark;
-}
+:root { color-scheme: light; }
+html { scroll-behavior: smooth; }
+body { background: var(--color-bg); color: var(--color-body); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
+h1, h2, h3, h4 { color: var(--color-ink); }
 
-html {
-  scroll-behavior: smooth;
-}
+/* layout + reusable building blocks (Staffinc look) */
+.container-x { max-width: 75rem; margin-inline: auto; padding-inline: 1.25rem; }
 
-body {
-  background: var(--color-bg);
-  color: #fff;
-  font-family: var(--font-sans);
-  -webkit-font-smoothing: antialiased;
-}
+.btn-primary { display:inline-flex; align-items:center; gap:.5rem; background:var(--color-dark); color:#fff; font-weight:700; padding:.8rem 1.4rem; border-radius:999px; text-decoration:none; transition:transform .15s ease, background .15s ease; }
+.btn-primary:hover { background:#000; transform:translateY(-1px); }
+.btn-accent { display:inline-flex; align-items:center; gap:.5rem; background:var(--color-accent); color:#1c1f27; font-weight:800; padding:.8rem 1.4rem; border-radius:999px; text-decoration:none; transition:transform .15s ease, filter .15s ease; }
+.btn-accent:hover { filter:brightness(.96); transform:translateY(-1px); }
+.btn-ghost { display:inline-flex; align-items:center; gap:.5rem; background:#fff; color:var(--color-ink); font-weight:700; padding:.75rem 1.3rem; border-radius:999px; border:1px solid var(--color-line); text-decoration:none; transition:border-color .15s ease; }
+.btn-ghost:hover { border-color:var(--color-accent); }
+.btn-wa { display:inline-flex; align-items:center; gap:.5rem; background:var(--color-whatsapp); color:#04220f; font-weight:700; padding:.8rem 1.35rem; border-radius:999px; text-decoration:none; transition:transform .15s ease; }
+.btn-wa:hover { transform:translateY(-1px); }
 
-.container-x {
-  max-width: 72rem;
-  margin-inline: auto;
-  padding-inline: 1rem;
-}
+.card { background:#fff; border:1px solid var(--color-line); border-radius:var(--radius-card); box-shadow:0 1px 2px rgba(16,24,40,.04); }
+.eyebrow { display:inline-block; font-size:.72rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--color-accent-2); background:var(--color-cream); padding:.4rem .8rem; border-radius:999px; }
+.section-title { font-size:clamp(1.6rem, 1.1rem + 2vw, 2.4rem); font-weight:800; color:var(--color-ink); line-height:1.15; letter-spacing:-.01em; }
+.lead { color:var(--color-body); font-size:1.05rem; line-height:1.7; }
 
-.btn-wa {
-  display: inline-flex;
-  align-items: center;
-  gap: .5rem;
-  background: var(--color-whatsapp);
-  color: #04220f;
-  font-weight: 700;
-  padding: .7rem 1.2rem;
-  border-radius: .5rem;
-  text-decoration: none;
-}
+/* colorful rounded icon badge (Staffinc feature cards) */
+.icon-badge { display:inline-flex; align-items:center; justify-content:center; width:3rem; height:3rem; border-radius:.9rem; }
+.icon-badge.amber  { background:#fff1d6; color:#d98a04; }
+.icon-badge.blue   { background:#e2effe; color:#2563eb; }
+.icon-badge.pink   { background:#fde7f1; color:#db2777; }
+.icon-badge.green  { background:#dcfce7; color:#16a34a; }
+.icon-badge.violet { background:#ede9fe; color:#7c3aed; }
 
-.bg-accent-grad {
-  background-image: linear-gradient(120deg, var(--color-accent), var(--color-accent-2));
-}
+/* kept for compatibility (amber gradient) */
+.bg-accent-grad { background-image: linear-gradient(120deg, var(--color-accent), var(--color-accent-2)); }
+
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }

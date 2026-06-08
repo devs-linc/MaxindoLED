@@ -56,7 +56,7 @@ export default function Gallery({ images }: Props) {
               type="button"
               onClick={() => setIndex(i)}
               aria-label={`Open image: ${img.alt}`}
-              class="group relative block aspect-[4/3] w-full overflow-hidden rounded-xl border border-white/10 bg-surface focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              class="group relative block aspect-[4/3] w-full overflow-hidden rounded-xl border border-line bg-surface focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
             >
               <img
                 src={img.src}

@@ -16,7 +16,7 @@ const href = /^\/(id|en)(\/|$)/.test(pathname) ? swapped : `/${other}${pathname}
 
 <a
   href={href}
-  class="rounded border border-white/15 px-2 py-1 text-sm font-medium text-muted transition-colors hover:border-accent hover:text-white"
+  class="rounded-full border border-line px-2 py-1 text-sm font-medium text-body transition-colors hover:border-accent hover:text-ink"
   hreflang={other}
 >
   {other.toUpperCase()}

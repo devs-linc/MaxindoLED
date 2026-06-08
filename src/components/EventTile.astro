@@ -9,9 +9,9 @@ const { href, title } = Astro.props;
 
 <a
   href={href}
-  class="group flex items-center justify-between gap-3 rounded-xl border border-white/10 bg-surface px-5 py-4 transition-colors hover:border-accent"
+  class="card group flex items-center justify-between gap-3 px-5 py-4 transition hover:border-accent hover:shadow-md"
 >
-  <span class="font-semibold text-white transition-colors group-hover:text-accent">
+  <span class="font-semibold text-ink transition-colors group-hover:text-accent">
     {title}
   </span>
   <span

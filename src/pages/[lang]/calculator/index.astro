@@ -44,24 +44,22 @@ const copy = {
   <section class="container-x py-16 md:py-24">
     <nav aria-label="Breadcrumb" class="mb-6 text-sm text-muted">
       <a href={localizedPath(lang, '/')} class="hover:text-accent">{copy.breadcrumbHome}</a>
-      <span class="px-2">/</span>
-      <span class="text-white/80">{copy.breadcrumbCurrent}</span>
+      <span class="px-2 text-muted">/</span>
+      <span class="text-body">{copy.breadcrumbCurrent}</span>
     </nav>
 
     <div class="max-w-2xl">
-      <span
-        class="inline-block rounded-full border border-accent/40 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-accent"
-      >
-        {copy.eyebrow}
-      </span>
-      <h1 class="mt-5 text-3xl font-extrabold leading-tight md:text-5xl">
+      <span class="eyebrow">{copy.eyebrow}</span>
+      <h1 class="section-title mt-5">
         {copy.h1}
       </h1>
-      <p class="mt-5 text-lg text-muted">{copy.intro}</p>
+      <p class="lead mt-5">{copy.intro}</p>
     </div>
 
     <div class="mt-10 max-w-3xl">
-      <Calculator client:load lang={lang} />
+      <div class="card p-6 md:p-8">
+        <Calculator client:load lang={lang} />
+      </div>
       <p class="mt-4 text-sm text-muted">{copy.note}</p>
     </div>
   </section>

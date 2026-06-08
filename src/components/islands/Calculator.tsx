@@ -118,10 +118,10 @@ export default function Calculator({ lang }: Props) {
   const waHref = waLink(buildMessage());
 
   return (
-    <div class="rounded-xl border border-white/10 bg-surface p-5 md:p-6">
+    <div>
       {/* Days input */}
       <div class="mb-6 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-        <label for="rental-days" class="text-sm font-semibold text-white/90">
+        <label for="rental-days" class="text-sm font-semibold text-ink">
           {c.days}
         </label>
         <input
@@ -131,12 +131,12 @@ export default function Calculator({ lang }: Props) {
           inputMode="numeric"
           value={days}
           onInput={(e) => setDays(parseInt((e.currentTarget as HTMLInputElement).value, 10) || 1)}
-          class="w-full rounded-lg border border-white/10 bg-bg px-3 py-2 text-white sm:w-28"
+          class="w-full rounded-lg border border-line bg-surface px-3 py-2 text-ink focus:border-accent focus:outline-none sm:w-28"
         />
       </div>
 
       {/* Catalog list */}
-      <ul class="divide-y divide-white/10">
+      <ul class="divide-y divide-line">
         {CATALOG.map((item) => {
           const qty = qtys[item.id] ?? 0;
           return (
@@ -145,7 +145,7 @@ export default function Calculator({ lang }: Props) {
               class="flex flex-col gap-3 py-4 sm:flex-row sm:items-center sm:justify-between"
             >
               <div class="min-w-0">
-                <p class="font-medium text-white">{item.name[lang]}</p>
+                <p class="font-medium text-ink">{item.name[lang]}</p>
                 <p class="text-sm text-muted">
                   {c.pricePerDay}: {formatIDR(item.pricePerDay)}
                 </p>
@@ -156,7 +156,7 @@ export default function Calculator({ lang }: Props) {
                   type="button"
                   aria-label={c.decrease}
                   onClick={() => setQty(item.id, qty - 1)}
-                  class="flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 text-lg text-white hover:bg-white/5"
+                  class="flex h-9 w-9 items-center justify-center rounded-lg border border-line text-lg text-ink hover:bg-surface"
                 >
                   −
                 </button>
@@ -169,13 +169,13 @@ export default function Calculator({ lang }: Props) {
                   onInput={(e) =>
                     setQty(item.id, parseInt((e.currentTarget as HTMLInputElement).value, 10) || 0)
                   }
-                  class="w-14 rounded-lg border border-white/10 bg-bg px-2 py-1.5 text-center text-white"
+                  class="w-14 rounded-lg border border-line bg-surface px-2 py-1.5 text-center text-ink focus:border-accent focus:outline-none"
                 />
                 <button
                   type="button"
                   aria-label={c.increase}
                   onClick={() => setQty(item.id, qty + 1)}
-                  class="flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 text-lg text-white hover:bg-white/5"
+                  class="flex h-9 w-9 items-center justify-center rounded-lg border border-line text-lg text-ink hover:bg-surface"
                 >
                   +
                 </button>
@@ -186,7 +186,7 @@ export default function Calculator({ lang }: Props) {
       </ul>
 
       {/* Live total */}
-      <div class="mt-6 flex items-center justify-between border-t border-white/10 pt-5">
+      <div class="mt-6 flex items-center justify-between border-t border-line pt-5">
         <span class="text-sm font-semibold uppercase tracking-wide text-muted">{c.total}</span>
         <span class="text-2xl font-extrabold text-accent">{formatIDR(total)}</span>
       </div>

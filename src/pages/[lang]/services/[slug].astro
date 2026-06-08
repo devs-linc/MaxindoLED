@@ -35,6 +35,7 @@ const copy = {
     eyebrow: 'Layanan',
     breadcrumbHome: 'Beranda',
     breadcrumbServices: 'Layanan',
+    faqTitle: 'Pertanyaan yang Sering Diajukan',
     relatedTitle: 'Layanan Lainnya',
     ctaTitle: 'Tertarik dengan layanan ini?',
     ctaBody:
@@ -44,6 +45,7 @@ const copy = {
     eyebrow: 'Service',
     breadcrumbHome: 'Home',
     breadcrumbServices: 'Services',
+    faqTitle: 'Frequently Asked Questions',
     relatedTitle: 'Other Services',
     ctaTitle: 'Interested in this service?',
     ctaBody:
@@ -119,46 +121,52 @@ const ctaMessage =
         {copy.breadcrumbServices}
       </a>
       <span class="px-2">/</span>
-      <span class="text-white">{entry.data.name}</span>
+      <span class="text-body">{entry.data.name}</span>
     </nav>
 
     <header class="max-w-3xl">
-      <span
-        class="inline-block rounded-full border border-accent/40 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-accent"
-      >
-        {copy.eyebrow}
-      </span>
-      <h1
-        class="mt-5 bg-accent-grad bg-clip-text text-4xl font-extrabold leading-tight text-transparent md:text-5xl"
-      >
-        {entry.data.name}
-      </h1>
-      <p class="mt-5 text-lg text-muted">{entry.data.description}</p>
+      <span class="eyebrow">{copy.eyebrow}</span>
+      <h1 class="section-title mt-5">{entry.data.name}</h1>
+      <p class="lead mt-5">{entry.data.description}</p>
       <div class="mt-8">
         <WhatsAppButton lang={lang} message={ctaMessage} />
       </div>
     </header>
 
     <div
-      class="prose prose-invert mt-12 max-w-3xl prose-headings:text-white prose-h2:mt-10 prose-h2:text-2xl prose-h2:font-bold prose-a:text-accent prose-strong:text-white prose-li:text-muted prose-p:text-muted"
+      class="prose mt-12 max-w-3xl text-body prose-headings:text-ink prose-h2:mt-10 prose-h2:text-2xl prose-h2:font-bold prose-a:text-accent prose-strong:text-ink prose-li:text-body prose-p:text-body"
     >
       <Content />
     </div>
 
-    <section class="mt-16 border-t border-white/10 pt-12">
-      <h2 class="text-2xl font-bold text-white">{copy.relatedTitle}</h2>
+    <section class="mt-16 border-t border-line pt-12">
+      <h2 class="section-title text-2xl">{copy.faqTitle}</h2>
+      <div class="mt-6 grid gap-4">
+        {
+          faqs.map((faq) => (
+            <div class="card p-6 md:p-7">
+              <h3 class="text-lg font-bold text-ink">{faq.q}</h3>
+              <p class="mt-2 text-body leading-relaxed">{faq.a}</p>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="mt-16 border-t border-line pt-12">
+      <h2 class="section-title text-2xl">{copy.relatedTitle}</h2>
       <ul class="mt-6 grid gap-6 sm:grid-cols-3">
         {
           related.map((service) => (
             <li>
               <a
                 href={localizedPath(lang, '/services/' + service.slug)}
-                class="group flex h-full flex-col rounded-xl border border-white/10 bg-surface p-6 transition hover:border-accent/50"
+                class="card group flex h-full flex-col p-6 transition hover:border-accent hover:shadow-md"
               >
-                <h3 class="text-lg font-bold text-white group-hover:text-accent">
+                <h3 class="text-lg font-bold text-ink group-hover:text-accent">
                   {service.data.name}
                 </h3>
-                <p class="mt-2 line-clamp-3 text-sm text-muted">
+                <p class="mt-2 line-clamp-3 text-sm text-body">
                   {service.data.description}
                 </p>
               </a>
@@ -169,10 +177,10 @@ const ctaMessage =
     </section>
 
     <div
-      class="mt-16 flex flex-col items-start gap-3 rounded-xl border border-white/10 bg-surface p-8"
+      class="mt-16 flex flex-col items-start gap-3 rounded-2xl bg-cream p-8"
     >
-      <p class="text-xl font-bold text-white">{copy.ctaTitle}</p>
-      <p class="text-muted">{copy.ctaBody}</p>
+      <p class="text-xl font-bold text-ink">{copy.ctaTitle}</p>
+      <p class="text-body">{copy.ctaBody}</p>
       <div class="mt-4">
         <WhatsAppButton lang={lang} message={ctaMessage} />
       </div>

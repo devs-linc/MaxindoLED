@@ -19,13 +19,14 @@ const sub = lang === 'id'
 const alt = lang === 'id' ? 'Logo klien Maxindo LED' : 'Maxindo LED client logo';
 ---
 
-<section class="container-x py-14 md:py-20">
-  <div class="mx-auto mb-9 max-w-2xl text-center">
-    <h2 class="text-2xl font-bold md:text-3xl">{heading}</h2>
-    <p class="mt-3 text-muted">{sub}</p>
-  </div>
+<section class="bg-surface py-14 md:py-20">
+  <div class="container-x">
+    <div class="mx-auto mb-9 max-w-2xl text-center">
+      <h2 class="text-2xl font-bold text-ink md:text-3xl">{heading}</h2>
+      <p class="mt-3 text-body">{sub}</p>
+    </div>
 
-  <div class="space-y-3">
+    <div class="space-y-3">
     {belts.map((belt, i) => (
       <div class="belt">
         <div class={`belt-track${i % 2 === 1 ? ' rev' : ''}`} style={`--dur:${34 + i * 6}s`}>
@@ -35,6 +36,7 @@ const alt = lang === 'id' ? 'Logo klien Maxindo LED' : 'Maxindo LED client logo'
         </div>
       </div>
     ))}
+    </div>
   </div>
 </section>
 
@@ -55,8 +57,8 @@ const alt = lang === 'id' ? 'Logo klien Maxindo LED' : 'Maxindo LED client logo'
   .chip {
     display: inline-flex; align-items: center; justify-content: center;
     height: 64px; min-width: 128px; padding: 0 20px; margin-right: 14px;
-    background: #fff; border-radius: 12px; flex: none;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, .25);
+    background: #fff; border: 1px solid var(--color-line); border-radius: 12px; flex: none;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, .06);
   }
   .chip img { max-height: 36px; max-width: 130px; width: auto; height: auto; display: block; }
   @keyframes belt-left { from { transform: translateX(0); } to { transform: translateX(-50%); } }

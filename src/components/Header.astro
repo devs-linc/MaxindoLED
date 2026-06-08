@@ -38,12 +38,11 @@ const waHref = waLink(waMessage);
 ---
 
 <header
-  class="sticky top-0 z-40 border-b border-white/10 backdrop-blur"
-  style="background: color-mix(in srgb, var(--color-surface) 80%, transparent);"
+  class="sticky top-0 z-40 border-b border-line bg-white/90 backdrop-blur"
 >
   <div class="container-x flex h-16 items-center justify-between gap-4">
     <a href={localizedPath(lang, '/')} class="flex items-center" aria-label="Maxindo LED">
-      <img src="/logo.png" alt="Maxindo LED" width="190" height="38" class="h-8 w-auto md:h-9" />
+      <img src="/logo-dark.png" alt="Maxindo LED" width="190" height="38" class="h-8 w-auto md:h-9" />
     </a>
 
     <nav class="hidden items-center gap-5 md:flex">
@@ -51,7 +50,7 @@ const waHref = waLink(waMessage);
         links.map((link) => (
           <a
             href={link.href}
-            class="text-sm font-medium text-muted transition-colors hover:text-white"
+            class="text-sm font-medium text-body transition-colors hover:text-ink"
           >
             {link.label}
           </a>

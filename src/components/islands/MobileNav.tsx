@@ -21,7 +21,7 @@ export default function MobileNav({ links, waHref, waLabel }: Props) {
         aria-label="Menu"
         aria-expanded={open}
         onClick={() => setOpen((v) => !v)}
-        class="flex h-10 w-10 items-center justify-center rounded text-white"
+        class="flex h-10 w-10 items-center justify-center rounded-full text-ink"
       >
         <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           {open ? (
@@ -34,15 +34,14 @@ export default function MobileNav({ links, waHref, waLabel }: Props) {
 
       {open && (
         <div
-          class="absolute left-0 right-0 top-full border-t border-white/10 px-4 py-4 shadow-xl"
-          style={{ background: 'var(--color-surface)' }}
+          class="absolute left-0 right-0 top-full border-t border-line bg-white px-4 py-4 shadow-xl"
         >
           <nav class="flex flex-col gap-1">
             {links.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                class="rounded px-2 py-2 text-base text-white/90 hover:bg-white/5"
+                class="rounded-lg px-2 py-2 text-base text-body hover:bg-surface hover:text-ink"
                 onClick={() => setOpen(false)}
               >
                 {link.label}

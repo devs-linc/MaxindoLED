@@ -24,16 +24,16 @@ const navItems: { key: UIKey; path: string }[] = [
 const year = new Date().getFullYear();
 ---
 
-<footer class="mt-20 border-t border-white/10" style="background: var(--color-surface);">
+<footer class="mt-20 border-t border-white/10 bg-[#181b22] text-slate-300">
   <div class="container-x grid gap-10 py-12 md:grid-cols-3">
     <div>
       <img src="/logo.png" alt="Maxindo LED" width="190" height="38" class="h-9 w-auto" />
-      <address class="mt-4 not-italic text-sm leading-relaxed text-muted">
+      <address class="mt-4 not-italic text-sm leading-relaxed text-slate-300">
         {SITE.address.street}<br />
         {SITE.address.locality}<br />
         {SITE.address.region} {SITE.address.postalCode}
       </address>
-      <p class="mt-3 text-sm text-muted">
+      <p class="mt-3 text-sm text-slate-300">
         <a class="hover:text-white" href={`tel:+${SITE.whatsapp}`}>{SITE.phoneDisplay}</a><br />
         <a class="hover:text-white" href={`mailto:${SITE.email}`}>{SITE.email}</a>
       </p>
@@ -47,7 +47,7 @@ const year = new Date().getFullYear();
             <li>
               <a
                 href={localizedPath(lang, item.path)}
-                class="text-muted transition-colors hover:text-white"
+                class="text-slate-300 transition-colors hover:text-white"
               >
                 {t(item.key)}
               </a>
@@ -60,16 +60,16 @@ const year = new Date().getFullYear();
     <div>
       <p class="mb-3 text-sm font-semibold uppercase tracking-wide text-white">Social</p>
       <ul class="space-y-2 text-sm">
-        <li><a class="text-muted hover:text-white" href={SITE.social.instagram} rel="noopener" target="_blank">Instagram</a></li>
-        <li><a class="text-muted hover:text-white" href={SITE.social.facebook} rel="noopener" target="_blank">Facebook</a></li>
-        <li><a class="text-muted hover:text-white" href={SITE.social.tiktok} rel="noopener" target="_blank">TikTok</a></li>
-        <li><a class="text-muted hover:text-white" href={SITE.social.youtube} rel="noopener" target="_blank">YouTube</a></li>
+        <li><a class="text-slate-300 hover:text-white" href={SITE.social.instagram} rel="noopener" target="_blank">Instagram</a></li>
+        <li><a class="text-slate-300 hover:text-white" href={SITE.social.facebook} rel="noopener" target="_blank">Facebook</a></li>
+        <li><a class="text-slate-300 hover:text-white" href={SITE.social.tiktok} rel="noopener" target="_blank">TikTok</a></li>
+        <li><a class="text-slate-300 hover:text-white" href={SITE.social.youtube} rel="noopener" target="_blank">YouTube</a></li>
       </ul>
     </div>
   </div>
 
   <div class="border-t border-white/10">
-    <div class="container-x py-5 text-sm text-muted">
+    <div class="container-x py-5 text-sm text-slate-300">
       &copy; {year} {SITE.name}. All rights reserved.
     </div>
   </div>

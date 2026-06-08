@@ -118,103 +118,173 @@ const socials = [
   <!-- Intro -->
   <section class="container-x py-16 md:py-24">
     <div class="max-w-3xl">
-      <span
-        class="inline-block rounded-full border border-accent/40 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-accent"
-      >
-        {copy.eyebrow}
-      </span>
-      <h1 class="mt-5 text-4xl font-extrabold leading-tight md:text-5xl">
-        {copy.h1}
-      </h1>
-      <p class="mt-5 text-lg leading-relaxed text-muted">{copy.lead}</p>
+      <span class="eyebrow">{copy.eyebrow}</span>
+      <h1 class="section-title mt-5">{copy.h1}</h1>
+      <p class="lead mt-5">{copy.lead}</p>
     </div>
 
-    <!-- Primary WhatsApp path -->
-    <div
-      class="mt-10 flex flex-col gap-4 rounded-xl border border-accent/30 bg-surface p-6 md:flex-row md:items-center md:justify-between"
-    >
-      <div>
-        <h2 class="text-xl font-bold">{copy.primaryTitle}</h2>
-        <p class="mt-1 text-muted">{copy.primaryText}</p>
-      </div>
-      <div class="shrink-0">
-        <WhatsAppButton lang={lang} message={copy.waMessage} />
-      </div>
-    </div>
-  </section>
-
-  <!-- NAP + hours + social -->
-  <section class="container-x pb-16 md:pb-24">
-    <div class="grid gap-6 md:grid-cols-3">
-      <!-- Contact details -->
-      <div class="rounded-xl border border-white/10 bg-surface p-6 md:col-span-2">
-        <h2 class="text-xl font-bold">{copy.napTitle}</h2>
-        <dl class="mt-5 space-y-5">
-          <div>
-            <dt class="text-sm font-semibold uppercase tracking-wide text-accent">
-              {copy.addressLabel}
-            </dt>
-            <dd class="mt-1 not-italic text-muted">
-              <address class="not-italic">
-                {SITE.address.street}<br />
-                {SITE.address.locality}<br />
-                {SITE.address.region} {SITE.address.postalCode}
-              </address>
-            </dd>
-          </div>
-          <div>
-            <dt class="text-sm font-semibold uppercase tracking-wide text-accent">
-              {copy.whatsappLabel}
-            </dt>
-            <dd class="mt-1">
-              <a
-                class="text-white transition-colors hover:text-accent"
-                rel="nofollow"
-                target="_blank"
-                href={waHref}
+    <!-- Two-column: contact details + enquiry form -->
+    <div class="mt-12 grid gap-8 lg:grid-cols-2">
+      <!-- Left: NAP card -->
+      <div class="card flex flex-col p-6 md:p-8">
+        <h2 class="text-xl font-bold text-ink">{copy.napTitle}</h2>
+        <dl class="mt-6 space-y-6">
+          <div class="flex gap-4">
+            <span class="icon-badge amber shrink-0" aria-hidden="true">
+              <svg
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
               >
-                {SITE.phoneDisplay}
-              </a>
-            </dd>
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0Z" />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
+            </span>
+            <div>
+              <dt class="text-sm font-semibold uppercase tracking-wide text-accent-2">
+                {copy.addressLabel}
+              </dt>
+              <dd class="mt-1 text-body">
+                <address class="not-italic leading-relaxed">
+                  {SITE.address.street}<br />
+                  {SITE.address.locality}<br />
+                  {SITE.address.region} {SITE.address.postalCode}
+                </address>
+              </dd>
+            </div>
           </div>
-          <div>
-            <dt class="text-sm font-semibold uppercase tracking-wide text-accent">
-              {copy.phoneLabel}
-            </dt>
-            <dd class="mt-1">
-              <a class="text-white transition-colors hover:text-accent" href={phoneHref}>
-                {SITE.phoneDisplay}
-              </a>
-            </dd>
+
+          <div class="flex gap-4">
+            <span class="icon-badge green shrink-0" aria-hidden="true">
+              <svg
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z" />
+              </svg>
+            </span>
+            <div>
+              <dt class="text-sm font-semibold uppercase tracking-wide text-accent-2">
+                {copy.whatsappLabel}
+              </dt>
+              <dd class="mt-1">
+                <a
+                  class="text-body transition-colors hover:text-accent"
+                  rel="nofollow"
+                  target="_blank"
+                  href={waHref}
+                >
+                  {SITE.phoneDisplay}
+                </a>
+              </dd>
+            </div>
           </div>
-          <div>
-            <dt class="text-sm font-semibold uppercase tracking-wide text-accent">
-              {copy.emailLabel}
-            </dt>
-            <dd class="mt-1">
-              <a class="text-white transition-colors hover:text-accent" href={emailHref}>
-                {SITE.email}
-              </a>
-            </dd>
+
+          <div class="flex gap-4">
+            <span class="icon-badge blue shrink-0" aria-hidden="true">
+              <svg
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M3 5a2 2 0 0 1 2-2h3.28a1 1 0 0 1 .95.68l1.5 4.5a1 1 0 0 1-.5 1.21l-2.26 1.13a11 11 0 0 0 5 5l1.13-2.26a1 1 0 0 1 1.21-.5l4.5 1.5a1 1 0 0 1 .68.95V19a2 2 0 0 1-2 2A16 16 0 0 1 3 5Z" />
+              </svg>
+            </span>
+            <div>
+              <dt class="text-sm font-semibold uppercase tracking-wide text-accent-2">
+                {copy.phoneLabel}
+              </dt>
+              <dd class="mt-1">
+                <a class="text-body transition-colors hover:text-accent" href={phoneHref}>
+                  {SITE.phoneDisplay}
+                </a>
+              </dd>
+            </div>
+          </div>
+
+          <div class="flex gap-4">
+            <span class="icon-badge pink shrink-0" aria-hidden="true">
+              <svg
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="2" y="4" width="20" height="16" rx="2" />
+                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+              </svg>
+            </span>
+            <div>
+              <dt class="text-sm font-semibold uppercase tracking-wide text-accent-2">
+                {copy.emailLabel}
+              </dt>
+              <dd class="mt-1">
+                <a class="text-body transition-colors hover:text-accent" href={emailHref}>
+                  {SITE.email}
+                </a>
+              </dd>
+            </div>
+          </div>
+
+          <div class="flex gap-4">
+            <span class="icon-badge violet shrink-0" aria-hidden="true">
+              <svg
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <path d="M12 6v6l4 2" />
+              </svg>
+            </span>
+            <div>
+              <dt class="text-sm font-semibold uppercase tracking-wide text-accent-2">
+                {copy.hoursTitle}
+              </dt>
+              <dd class="mt-1 text-body">
+                <span class="font-semibold text-ink">{copy.hoursValue}</span>
+                <span class="mt-1 block text-sm text-muted">{copy.hoursNote}</span>
+              </dd>
+            </div>
           </div>
         </dl>
-      </div>
 
-      <!-- Hours + social -->
-      <div class="flex flex-col gap-6">
-        <div class="rounded-xl border border-white/10 bg-surface p-6">
-          <h2 class="text-xl font-bold">{copy.hoursTitle}</h2>
-          <p class="mt-3 font-semibold text-white">{copy.hoursValue}</p>
-          <p class="mt-1 text-sm text-muted">{copy.hoursNote}</p>
-        </div>
-        <div class="rounded-xl border border-white/10 bg-surface p-6">
-          <h2 class="text-xl font-bold">{copy.socialTitle}</h2>
-          <ul class="mt-3 space-y-2">
+        <!-- Socials -->
+        <div class="mt-8 border-t border-line pt-6">
+          <h3 class="text-sm font-semibold uppercase tracking-wide text-accent-2">
+            {copy.socialTitle}
+          </h3>
+          <ul class="mt-3 flex flex-wrap gap-2">
             {
               socials.map((s) => (
                 <li>
                   <a
-                    class="text-muted transition-colors hover:text-accent"
+                    class="btn-ghost text-sm"
                     rel="noopener"
                     target="_blank"
                     href={s.href}
@@ -226,95 +296,99 @@ const socials = [
             }
           </ul>
         </div>
+
+        <!-- Prominent WhatsApp CTA -->
+        <div class="mt-8 rounded-2xl bg-cream p-6">
+          <h3 class="text-lg font-bold text-ink">{copy.primaryTitle}</h3>
+          <p class="mt-1 text-body">{copy.primaryText}</p>
+          <div class="mt-4">
+            <WhatsAppButton lang={lang} message={copy.waMessage} />
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Enquiry form card -->
+      <div class="card flex flex-col p-6 md:p-8">
+        <h2 class="text-xl font-bold text-ink">{copy.formTitle}</h2>
+        <p class="mt-2 text-body">{copy.formIntro}</p>
+
+        {/* TODO: Replace `your-id` with the real Formspree form ID before going live. */}
+        <form
+          class="mt-6 space-y-5"
+          action="https://formspree.io/f/your-id"
+          method="POST"
+        >
+          <div>
+            <label class="block text-sm font-semibold text-ink" for="name">
+              {copy.nameLabel}
+            </label>
+            <input
+              class="mt-1.5 w-full rounded-xl border border-line bg-surface px-4 py-3 text-ink placeholder:text-muted outline-none transition-colors focus:border-accent"
+              id="name"
+              name="name"
+              type="text"
+              required
+            />
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-ink" for="whatsapp">
+              {copy.waNumberLabel}
+            </label>
+            <input
+              class="mt-1.5 w-full rounded-xl border border-line bg-surface px-4 py-3 text-ink placeholder:text-muted outline-none transition-colors focus:border-accent"
+              id="whatsapp"
+              name="whatsapp"
+              type="tel"
+              inputmode="tel"
+              required
+            />
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-ink" for="event-date">
+              {copy.dateLabel}
+            </label>
+            <input
+              class="mt-1.5 w-full rounded-xl border border-line bg-surface px-4 py-3 text-ink placeholder:text-muted outline-none transition-colors focus:border-accent"
+              id="event-date"
+              name="event_date"
+              type="date"
+            />
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-ink" for="message">
+              {copy.messageLabel}
+            </label>
+            <textarea
+              class="mt-1.5 w-full rounded-xl border border-line bg-surface px-4 py-3 text-ink placeholder:text-muted outline-none transition-colors focus:border-accent"
+              id="message"
+              name="message"
+              rows="4"
+              placeholder={copy.messagePlaceholder}
+              required></textarea>
+          </div>
+          <button class="btn-accent w-full justify-center" type="submit">
+            {copy.submit}
+          </button>
+        </form>
       </div>
     </div>
   </section>
 
   <!-- Map -->
-  <section class="container-x pb-16 md:pb-24">
-    <h2 class="text-2xl font-bold">{copy.mapHeading}</h2>
-    <div class="mt-5 overflow-hidden rounded-xl border border-white/10">
-      <iframe
-        src={mapSrc}
-        title={copy.mapTitle}
-        loading="lazy"
-        referrerpolicy="no-referrer-when-downgrade"
-        width="100%"
-        height="420"
-        style="border:0; display:block;"
-        allowfullscreen
-      ></iframe>
-    </div>
-  </section>
-
-  <!-- Enquiry form -->
-  <section class="container-x pb-16 md:pb-24">
-    <div class="mx-auto max-w-2xl rounded-xl border border-white/10 bg-surface p-6 md:p-8">
-      <h2 class="text-2xl font-bold">{copy.formTitle}</h2>
-      <p class="mt-2 text-muted">{copy.formIntro}</p>
-
-      {/* TODO: Replace `your-id` with the real Formspree form ID before going live. */}
-      <form
-        class="mt-6 space-y-5"
-        action="https://formspree.io/f/your-id"
-        method="POST"
-      >
-        <div>
-          <label class="block text-sm font-semibold" for="name">{copy.nameLabel}</label>
-          <input
-            class="mt-1 w-full rounded-lg border border-white/10 bg-bg px-3 py-2 text-white outline-none focus:border-accent"
-            id="name"
-            name="name"
-            type="text"
-            required
-          />
-        </div>
-        <div>
-          <label class="block text-sm font-semibold" for="whatsapp">
-            {copy.waNumberLabel}
-          </label>
-          <input
-            class="mt-1 w-full rounded-lg border border-white/10 bg-bg px-3 py-2 text-white outline-none focus:border-accent"
-            id="whatsapp"
-            name="whatsapp"
-            type="tel"
-            inputmode="tel"
-            required
-          />
-        </div>
-        <div>
-          <label class="block text-sm font-semibold" for="event-date">
-            {copy.dateLabel}
-          </label>
-          <input
-            class="mt-1 w-full rounded-lg border border-white/10 bg-bg px-3 py-2 text-white outline-none focus:border-accent"
-            id="event-date"
-            name="event_date"
-            type="date"
-          />
-        </div>
-        <div>
-          <label class="block text-sm font-semibold" for="message">
-            {copy.messageLabel}
-          </label>
-          <textarea
-            class="mt-1 w-full rounded-lg border border-white/10 bg-bg px-3 py-2 text-white outline-none focus:border-accent"
-            id="message"
-            name="message"
-            rows="4"
-            placeholder={copy.messagePlaceholder}
-            required></textarea>
-        </div>
-        <button
-          class="rounded-lg bg-accent-grad px-5 py-2.5 font-bold text-white"
-          type="submit"
-        >
-          {copy.submit}
-        </button>
-      </form>
-
-      <div class="mt-6 border-t border-white/10 pt-6">
-        <WhatsAppButton lang={lang} message={copy.waMessage} />
+  <section class="bg-surface py-16 md:py-24">
+    <div class="container-x">
+      <h2 class="section-title">{copy.mapHeading}</h2>
+      <div class="mt-6 overflow-hidden rounded-2xl border border-line shadow-sm">
+        <iframe
+          src={mapSrc}
+          title={copy.mapTitle}
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          width="100%"
+          height="420"
+          style="border:0; display:block;"
+          allowfullscreen
+        ></iframe>
       </div>
     </div>
   </section>
