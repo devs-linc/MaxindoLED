@@ -51,9 +51,25 @@ npm test          # vitest (i18n + calculator logic)
 - **Google Analytics 4:** add the GA4 tag (drop the snippet into `src/layouts/Base.astro` `<head>`).
 - **Google Business Profile:** create/claim for the Tangerang address — pairs with the LocalBusiness schema for Maps / "near me".
 
+## Content editing (Keystatic)
+
+The site now ships with the **Keystatic CMS** wired up for visual content editing.
+
+```bash
+npm run dev                          # http://localhost:4321
+# then open the admin UI:
+#   http://localhost:4321/keystatic
+```
+
+- The editor exposes one collection per content type **and** locale — `Services`, `Equipment`, `Event Types`, `Articles`, each split into **ID** and **EN** (grouped in the left-hand nav). Each one reads/writes the exact same Markdown files under `src/content/<collection>/<locale>/`, so edits flow straight into the static build.
+- Storage is **`local`** (`keystatic.config.ts`), meaning saves write directly to the working tree on your machine — review the diff and commit like any other change. The 77 static pages still build from `src/content.config.ts` and are independent of Keystatic; `keystatic.config.ts` only powers the `/keystatic` admin UI.
+- The `/keystatic` admin route renders on-demand, which is why the **Vercel adapter** (`@astrojs/vercel`) is now in `astro.config.mjs` (`output` stays `static`; only the admin route is a server function).
+- **Image fields** (`image`/`cover`) are edited as a text **path** (e.g. `./placeholder.png`). To swap a photo, drop the file next to the Markdown and update the path. (Switching these to Keystatic's native image upload field is a possible later refinement.)
+
+> **Editing on the live site requires switching `storage` to GitHub mode** (a GitHub App that commits via PRs) instead of `local` — that's a later step, not yet configured. Until then, editing happens locally and is committed to the repo.
+
 ## Optional next phase
 
-- **Keystatic CMS** (already installed) for non-technical editing of equipment & articles — needs the Vercel adapter + a server-rendered `/keystatic` admin route. Until then, content is editable as Markdown in `src/content/`.
 - Add more equipment items, event types, and articles (just add Markdown files — pages generate automatically).
 
 ---
