@@ -1,0 +1,136 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import WhatsAppButton from '../../../components/WhatsAppButton.astro';
+import Breadcrumb from '../../../components/schema/Breadcrumb.astro';
+import { localizedPath } from '../../../i18n/utils';
+import type { Lang } from '../../../i18n/ui';
+import { categorySlug } from "../../../utils/slug";
+import { SITE } from '../../../consts';
+
+export function getStaticPaths() {
+  return [{ params: { lang: 'id' } }, { params: { lang: 'en' } }];
+}
+
+const lang = Astro.params.lang as Lang;
+
+
+const all = await getCollection('equipment');
+const items = all.filter((e) => e.id.startsWith(`${lang}/`));
+
+// Build a distinct, ordered list of categories with item counts.
+const seen = new Map<string, { name: string; slug: string; count: number }>();
+for (const e of items) {
+  const name = e.data.category;
+  const slug = categorySlug(name);
+  const existing = seen.get(slug);
+  if (existing) existing.count += 1;
+  else seen.set(slug, { name, slug, count: 1 });
+}
+const categories = [...seen.values()];
+
+const copy = {
+  id: {
+    eyebrow: 'Katalog Peralatan',
+    h1: 'Peralatan Sewa untuk Setiap Acara',
+    intro:
+      'Jelajahi katalog lengkap peralatan event Maxindo LED, mulai dari layar LED, sound system, hingga lighting panggung. Pilih kategori untuk melihat spesifikasi dan harga sewa harian.',
+    home: 'Beranda',
+    equipment: 'Peralatan',
+    browse: 'Lihat kategori',
+    unit: 'unit',
+    cta: 'Butuh rekomendasi? Tim kami siap membantu menyusun paket peralatan yang sesuai dengan kebutuhan dan anggaran acara Anda.',
+    waMessage:
+      'Halo Maxindo LED, saya ingin menanyakan katalog peralatan untuk acara saya.',
+  },
+  en: {
+    eyebrow: 'Equipment Catalog',
+    h1: 'Rental Equipment for Every Event',
+    intro:
+      "Explore Maxindo LED's complete event equipment catalog, from LED screens and sound systems to stage lighting. Choose a category to view specifications and daily rental prices.",
+    home: 'Home',
+    equipment: 'Equipment',
+    browse: 'View category',
+    unit: 'units',
+    cta: 'Need a recommendation? Our team is ready to help build an equipment package that fits your event needs and budget.',
+    waMessage:
+      'Hello Maxindo LED, I would like to ask about your equipment catalog for my event.',
+  },
+}[lang];
+
+const title = `${copy.h1} | Maxindo LED`;
+const description = copy.intro;
+
+const crumbs = [
+  { name: copy.home, url: new URL(localizedPath(lang, '/'), Astro.site).toString() },
+  {
+    name: copy.equipment,
+    url: new URL(localizedPath(lang, '/equipment'), Astro.site).toString(),
+  },
+];
+---
+
+<Base title={title} description={description} lang={lang}>
+  <Breadcrumb slot="head" items={crumbs} />
+
+  <section class="container-x py-16 md:py-24">
+    <nav class="mb-8 text-sm text-muted" aria-label="Breadcrumb">
+      <ol class="flex flex-wrap items-center gap-2">
+        <li>
+          <a class="hover:text-accent" href={localizedPath(lang, '/')}>
+            {copy.home}
+          </a>
+        </li>
+        <li aria-hidden="true">/</li>
+        <li class="text-white">{copy.equipment}</li>
+      </ol>
+    </nav>
+
+    <div class="max-w-3xl">
+      <span
+        class="inline-block rounded-full border border-accent/40 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-accent"
+      >
+        {copy.eyebrow}
+      </span>
+      <h1
+        class="mt-5 bg-accent-grad bg-clip-text text-4xl font-extrabold leading-tight text-transparent md:text-5xl"
+      >
+        {copy.h1}
+      </h1>
+      <p class="mt-5 text-lg text-muted">{copy.intro}</p>
+    </div>
+
+    <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        categories.map((cat) => (
+          <a
+            href={localizedPath(lang, `/equipment/${cat.slug}`)}
+            class="group flex flex-col justify-between rounded-xl border border-white/10 bg-surface p-6 transition hover:border-accent/60 hover:bg-surface/80"
+          >
+            <div>
+              <h2 class="text-xl font-bold text-white group-hover:text-accent">
+                {cat.name}
+              </h2>
+              <p class="mt-2 text-sm text-muted">
+                {cat.count} {copy.unit}
+              </p>
+            </div>
+            <span class="mt-6 inline-flex items-center gap-1 text-sm font-semibold text-accent">
+              {copy.browse}
+              <span aria-hidden="true">&rarr;</span>
+            </span>
+          </a>
+        ))
+      }
+    </div>
+
+    <div
+      class="mt-14 rounded-xl border border-white/10 bg-surface p-8 md:flex md:items-center md:justify-between md:gap-8"
+    >
+      <p class="max-w-xl text-muted">{copy.cta}</p>
+      <div class="mt-6 shrink-0 md:mt-0">
+        <WhatsAppButton lang={lang} message={copy.waMessage} />
+      </div>
+    </div>
+  </section>
+</Base>

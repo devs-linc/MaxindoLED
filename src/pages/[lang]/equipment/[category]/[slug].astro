@@ -1,0 +1,253 @@
+---
+import { getCollection, render } from 'astro:content';
+import { Image } from 'astro:assets';
+import Base from '../../../../layouts/Base.astro';
+import WhatsAppButton from '../../../../components/WhatsAppButton.astro';
+import Product from '../../../../components/schema/Product.astro';
+import Breadcrumb from '../../../../components/schema/Breadcrumb.astro';
+import { localizedPath } from '../../../../i18n/utils';
+import type { Lang } from '../../../../i18n/ui';
+import { categorySlug } from "../../../../utils/slug";
+
+
+export async function getStaticPaths() {
+  const all = await getCollection('equipment');
+  const langs: Lang[] = ['id', 'en'];
+  const paths = [];
+
+  for (const lang of langs) {
+    const items = all.filter((e) => e.id.startsWith(`${lang}/`));
+    for (const entry of items) {
+      const slug = entry.id.slice(lang.length + 1);
+      paths.push({
+        params: {
+          lang,
+          category: categorySlug(entry.data.category),
+          slug,
+        },
+        props: { entry },
+      });
+    }
+  }
+
+  return paths;
+}
+
+const lang = Astro.params.lang as Lang;
+const categoryParam = Astro.params.category as string;
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+
+const data = entry.data;
+
+// Related items: same category, same language, excluding the current item.
+const all = await getCollection('equipment');
+const slug = entry.id.slice(lang.length + 1);
+const related = all
+  .filter((e) => e.id.startsWith(`${lang}/`))
+  .filter((e) => e.data.category === data.category)
+  .filter((e) => e.id !== entry.id)
+  .slice(0, 3);
+
+const relatedSlug = (id: string) => id.slice(lang.length + 1);
+
+const copy = {
+  id: {
+    home: 'Beranda',
+    equipment: 'Peralatan',
+    specs: 'Spesifikasi',
+    perDay: '/ hari',
+    relatedTitle: 'Peralatan lain di kategori ini',
+    detail: 'Lihat detail',
+    waMessage: `Halo Maxindo LED, saya ingin menyewa ${data.name}. Apakah tersedia?`,
+  },
+  en: {
+    home: 'Home',
+    equipment: 'Equipment',
+    specs: 'Specifications',
+    perDay: '/ day',
+    relatedTitle: 'Other equipment in this category',
+    detail: 'View details',
+    waMessage: `Hello Maxindo LED, I would like to rent the ${data.name}. Is it available?`,
+  },
+}[lang];
+
+const priceFormatted = `Rp ${data.pricePerDay.toLocaleString('id-ID')} ${copy.perDay}`;
+
+const title =
+  lang === 'id'
+    ? `Sewa ${data.name} | Maxindo LED`
+    : `${data.name} Rental | Maxindo LED`;
+const description = data.description;
+
+const imageUrl = new URL(data.image.src, Astro.site).toString();
+
+const crumbs = [
+  { name: copy.home, url: new URL(localizedPath(lang, '/'), Astro.site).toString() },
+  {
+    name: copy.equipment,
+    url: new URL(localizedPath(lang, '/equipment'), Astro.site).toString(),
+  },
+  {
+    name: data.category,
+    url: new URL(
+      localizedPath(lang, `/equipment/${categoryParam}`),
+      Astro.site
+    ).toString(),
+  },
+  {
+    name: data.name,
+    url: new URL(
+      localizedPath(lang, `/equipment/${categoryParam}/${slug}`),
+      Astro.site
+    ).toString(),
+  },
+];
+---
+
+<Base
+  title={title}
+  description={description}
+  lang={lang}
+  image={imageUrl}
+>
+  <Product
+    slot="head"
+    name={data.name}
+    description={data.description}
+    image={imageUrl}
+    price={data.pricePerDay}
+    sku={data.sku}
+    category={data.category}
+  />
+  <Breadcrumb slot="head" items={crumbs} />
+
+  <article class="container-x py-16 md:py-24">
+    <nav class="mb-8 text-sm text-muted" aria-label="Breadcrumb">
+      <ol class="flex flex-wrap items-center gap-2">
+        <li>
+          <a class="hover:text-accent" href={localizedPath(lang, '/')}>
+            {copy.home}
+          </a>
+        </li>
+        <li aria-hidden="true">/</li>
+        <li>
+          <a class="hover:text-accent" href={localizedPath(lang, '/equipment')}>
+            {copy.equipment}
+          </a>
+        </li>
+        <li aria-hidden="true">/</li>
+        <li>
+          <a
+            class="hover:text-accent"
+            href={localizedPath(lang, `/equipment/${categoryParam}`)}
+          >
+            {data.category}
+          </a>
+        </li>
+        <li aria-hidden="true">/</li>
+        <li class="text-white">{data.name}</li>
+      </ol>
+    </nav>
+
+    <div class="grid gap-10 lg:grid-cols-2">
+      <div class="overflow-hidden rounded-xl border border-white/10 bg-surface">
+        <Image
+          src={data.image}
+          alt={data.name}
+          widths={[400, 800]}
+          sizes="(max-width:768px) 100vw, 400px"
+          class="h-full w-full object-cover"
+        />
+      </div>
+
+      <div>
+        <span
+          class="inline-block rounded-full border border-accent/40 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-accent"
+        >
+          {data.category}
+        </span>
+        <h1 class="mt-4 text-3xl font-extrabold text-white md:text-4xl">
+          {data.name}
+        </h1>
+        <p class="mt-4 text-lg text-muted">{data.description}</p>
+        <p class="mt-6 text-2xl font-bold text-accent">{priceFormatted}</p>
+
+        <div class="mt-8">
+          <WhatsAppButton lang={lang} message={copy.waMessage} />
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-14 grid gap-10 lg:grid-cols-2">
+      <div class="prose-invert max-w-none text-muted leading-relaxed [&>p]:mt-4">
+        <Content />
+      </div>
+
+      <div>
+        <h2 class="text-xl font-bold text-white">{copy.specs}</h2>
+        <table class="mt-4 w-full border-collapse overflow-hidden rounded-xl border border-white/10 text-sm">
+          <tbody>
+            {
+              data.specs.map((spec, i) => (
+                <tr class={i % 2 === 0 ? 'bg-surface' : 'bg-surface/50'}>
+                  <th
+                    scope="row"
+                    class="w-2/5 border-b border-white/5 px-4 py-3 text-left font-semibold text-white"
+                  >
+                    {spec.label}
+                  </th>
+                  <td class="border-b border-white/5 px-4 py-3 text-muted">
+                    {spec.value}
+                  </td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    {
+      related.length > 0 && (
+        <section class="mt-16">
+          <h2 class="text-2xl font-bold text-white">{copy.relatedTitle}</h2>
+          <div class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {related.map((item) => (
+              <a
+                href={localizedPath(
+                  lang,
+                  `/equipment/${categoryParam}/${relatedSlug(item.id)}`
+                )}
+                class="group flex flex-col overflow-hidden rounded-xl border border-white/10 bg-surface transition hover:border-accent/60"
+              >
+                <div class="aspect-[4/3] overflow-hidden bg-bg">
+                  <Image
+                    src={item.data.image}
+                    alt={item.data.name}
+                    widths={[400, 800]}
+                    sizes="(max-width:768px) 100vw, 400px"
+                    class="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+                  />
+                </div>
+                <div class="flex flex-1 flex-col p-5">
+                  <h3 class="text-lg font-bold text-white group-hover:text-accent">
+                    {item.data.name}
+                  </h3>
+                  <p class="mt-3 font-bold text-accent">
+                    Rp {item.data.pricePerDay.toLocaleString('id-ID')}{' '}
+                    {copy.perDay}
+                  </p>
+                  <span class="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-accent">
+                    {copy.detail}
+                    <span aria-hidden="true">&rarr;</span>
+                  </span>
+                </div>
+              </a>
+            ))}
+          </div>
+        </section>
+      )
+    }
+  </article>
+</Base>

@@ -1,0 +1,237 @@
+---
+import Base from '../../../layouts/Base.astro';
+import WhatsAppButton from '../../../components/WhatsAppButton.astro';
+import Breadcrumb from '../../../components/schema/Breadcrumb.astro';
+import Gallery from '../../../components/islands/Gallery.tsx';
+import { localizedPath } from '../../../i18n/utils';
+import { SITE } from '../../../consts';
+import type { Lang } from '../../../i18n/ui';
+
+export function getStaticPaths() {
+  return [{ params: { lang: 'id' } }, { params: { lang: 'en' } }];
+}
+
+const lang = Astro.params.lang as Lang;
+
+const copy =
+  lang === 'id'
+    ? {
+        kicker: 'Portofolio',
+        title: 'Acara yang Telah Kami Sukseskan',
+        intro:
+          'Selama bertahun-tahun, Maxindo LED dipercaya menangani ratusan acara di Tangerang, Jakarta, dan sekitarnya. Dari konser megah, gathering perusahaan, hingga pernikahan intim, kami menghadirkan LED screen, sound system, dan pencahayaan berkualitas. Berikut sekilas dokumentasi acara yang pernah kami tangani.',
+        note: 'Foto di bawah adalah placeholder. Dokumentasi acara asli akan segera ditambahkan.',
+        caseTitle: 'Sorotan Proyek',
+        caseIntro:
+          'Beberapa contoh acara yang menggambarkan cakupan layanan kami.',
+        home: 'Beranda',
+        portfolio: 'Portofolio',
+        ctaTitle: 'Ingin acara Anda jadi yang berikutnya?',
+        ctaIntro:
+          'Ceritakan rencana acara Anda kepada tim Maxindo LED. Kami bantu rancang paket LED screen dan audio visual yang paling sesuai dengan venue dan anggaran Anda.',
+        meta: 'Portofolio acara Maxindo LED: konser, gathering perusahaan, pameran, dan pernikahan dengan LED screen, sound system, dan lighting profesional di Tangerang & Jakarta.',
+        cases: [
+          {
+            title: 'Konser Musik Outdoor',
+            blurb:
+              'Layar LED P5 outdoor 6x4 meter dengan sound system line array untuk panggung utama dan area penonton ribuan orang.',
+          },
+          {
+            title: 'Gathering Perusahaan',
+            blurb:
+              'Videotron indoor P3 untuk presentasi dan live feed, dilengkapi tata cahaya panggung dan mikrofon nirkabel.',
+          },
+          {
+            title: 'Pameran & Expo',
+            blurb:
+              'Instalasi LED screen multi-panel di booth utama untuk menarik perhatian pengunjung selama tiga hari acara.',
+          },
+          {
+            title: 'Pernikahan Indoor',
+            blurb:
+              'Layar LED P2.5 di belakang panggung pelaminan untuk live feed prosesi dan video prewedding pasangan.',
+          },
+        ],
+      }
+    : {
+        kicker: 'Portfolio',
+        title: 'Events We Have Powered',
+        intro:
+          'Over the years, Maxindo LED has been trusted to handle hundreds of events across Tangerang, Jakarta, and beyond. From grand concerts and corporate gatherings to intimate weddings, we deliver quality LED screens, sound systems, and lighting. Here is a glimpse of the events we have produced.',
+        note: 'The photos below are placeholders. Real event documentation will be added soon.',
+        caseTitle: 'Project Highlights',
+        caseIntro:
+          'A few example events that illustrate the range of our services.',
+        home: 'Home',
+        portfolio: 'Portfolio',
+        ctaTitle: 'Want your event to be next?',
+        ctaIntro:
+          'Tell the Maxindo LED team about your event plans. We will help design the LED screen and audio visual package that best fits your venue and budget.',
+        meta: 'Maxindo LED event portfolio: concerts, corporate gatherings, exhibitions, and weddings with professional LED screens, sound systems, and lighting in Tangerang & Jakarta.',
+        cases: [
+          {
+            title: 'Outdoor Music Concert',
+            blurb:
+              'A 6x4 meter outdoor P5 LED wall with a line array sound system for the main stage and an audience of thousands.',
+          },
+          {
+            title: 'Corporate Gathering',
+            blurb:
+              'An indoor P3 videotron for presentations and live feed, paired with stage lighting and wireless microphones.',
+          },
+          {
+            title: 'Exhibition & Expo',
+            blurb:
+              'A multi-panel LED screen installation at the main booth to draw visitors over the three-day event.',
+          },
+          {
+            title: 'Indoor Wedding',
+            blurb:
+              'A P2.5 LED screen behind the aisle stage for a live feed of the ceremony and the couple’s prewedding video.',
+          },
+        ],
+      };
+
+// Placeholder gallery images. Replace `src` with real event photos when available.
+const galleryImages = [
+  {
+    src: '/og-default.jpg',
+    alt:
+      lang === 'id'
+        ? 'Panggung konser dengan layar LED besar di belakang band'
+        : 'Concert stage with a large LED screen behind the band',
+  },
+  {
+    src: '/og-default.jpg',
+    alt:
+      lang === 'id'
+        ? 'Videotron indoor menampilkan presentasi pada gathering perusahaan'
+        : 'Indoor videotron showing a presentation at a corporate gathering',
+  },
+  {
+    src: '/og-default.jpg',
+    alt:
+      lang === 'id'
+        ? 'Layar LED pelaminan menampilkan live feed prosesi pernikahan'
+        : 'Wedding stage LED screen showing a live feed of the ceremony',
+  },
+  {
+    src: '/og-default.jpg',
+    alt:
+      lang === 'id'
+        ? 'Instalasi LED screen di booth pameran'
+        : 'LED screen installation at an exhibition booth',
+  },
+  {
+    src: '/og-default.jpg',
+    alt:
+      lang === 'id'
+        ? 'Tata cahaya panggung dengan uplight berwarna'
+        : 'Stage lighting setup with colored uplights',
+  },
+  {
+    src: '/og-default.jpg',
+    alt:
+      lang === 'id'
+        ? 'Sound system line array tergantung di sisi panggung utama'
+        : 'Line array sound system hung at the side of the main stage',
+  },
+  {
+    src: '/og-default.jpg',
+    alt:
+      lang === 'id'
+        ? 'Layar LED outdoor di acara musik malam hari'
+        : 'Outdoor LED screen at a nighttime music event',
+  },
+  {
+    src: '/og-default.jpg',
+    alt:
+      lang === 'id'
+        ? 'Tim teknisi Maxindo LED memasang panel layar'
+        : 'Maxindo LED technicians installing screen panels',
+  },
+];
+
+const title = `${copy.title} | Maxindo LED`;
+
+const breadcrumbItems = [
+  { name: copy.home, url: new URL(localizedPath(lang, '/'), SITE.url).href },
+  {
+    name: copy.portfolio,
+    url: new URL(localizedPath(lang, '/portfolio'), SITE.url).href,
+  },
+];
+---
+
+<Base title={title} description={copy.meta} lang={lang}>
+  <Breadcrumb slot="head" items={breadcrumbItems} />
+
+  <section class="container-x py-16 md:py-24">
+    <nav aria-label="Breadcrumb" class="mb-8 text-sm text-muted">
+      <ol class="flex flex-wrap items-center gap-2">
+        <li>
+          <a href={localizedPath(lang, '/')} class="hover:text-accent">{copy.home}</a>
+        </li>
+        <li aria-hidden="true" class="text-white/30">/</li>
+        <li class="text-white/70">{copy.portfolio}</li>
+      </ol>
+    </nav>
+
+    <div class="max-w-3xl">
+      <span
+        class="inline-block rounded-full border border-accent/40 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-accent"
+      >
+        {copy.kicker}
+      </span>
+      <h1 class="mt-5 text-4xl font-extrabold leading-tight md:text-5xl">
+        {copy.title}
+      </h1>
+      <p class="mt-5 text-lg text-muted">{copy.intro}</p>
+      <p class="mt-3 text-sm italic text-white/40">{copy.note}</p>
+    </div>
+
+    <div class="mt-12">
+      <Gallery client:visible images={galleryImages} />
+    </div>
+  </section>
+
+  <section class="border-t border-white/10 bg-surface/30">
+    <div class="container-x py-16 md:py-24">
+      <div class="max-w-2xl">
+        <h2 class="text-3xl font-bold md:text-4xl">{copy.caseTitle}</h2>
+        <p class="mt-4 text-muted">{copy.caseIntro}</p>
+      </div>
+      <ul class="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2">
+        {
+          copy.cases.map((c) => (
+            <li class="rounded-xl border border-white/10 bg-surface p-6">
+              <h3 class="text-lg font-bold text-white">{c.title}</h3>
+              <p class="mt-3 text-sm text-muted">{c.blurb}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="border-t border-white/10">
+    <div class="container-x py-16 md:py-24">
+      <div class="relative overflow-hidden rounded-2xl border border-white/10 bg-surface p-8 md:p-14">
+        <div
+          aria-hidden="true"
+          class="pointer-events-none absolute -top-24 -right-16 h-72 w-72 rounded-full bg-accent-grad opacity-20 blur-3xl"
+        >
+        </div>
+        <div class="relative max-w-2xl">
+          <h2 class="bg-accent-grad bg-clip-text text-3xl font-extrabold text-transparent md:text-4xl">
+            {copy.ctaTitle}
+          </h2>
+          <p class="mt-4 text-muted">{copy.ctaIntro}</p>
+          <div class="mt-8">
+            <WhatsAppButton lang={lang} />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

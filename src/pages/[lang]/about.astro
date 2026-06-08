@@ -1,0 +1,207 @@
+---
+import Base from '../../layouts/Base.astro';
+import WhatsAppButton from '../../components/WhatsAppButton.astro';
+import Organization from '../../components/schema/Organization.astro';
+import Breadcrumb from '../../components/schema/Breadcrumb.astro';
+import { SITE } from '../../consts';
+import { useTranslations, localizedPath } from '../../i18n/utils';
+import type { Lang } from '../../i18n/ui';
+
+export function getStaticPaths() {
+  return [{ params: { lang: 'id' } }, { params: { lang: 'en' } }];
+}
+
+const lang = Astro.params.lang as Lang;
+const t = useTranslations(lang);
+
+const copy = {
+  id: {
+    title: 'Tentang Maxindo LED | Penyewaan Multimedia Acara',
+    description:
+      'Mengenal Maxindo LED, penyedia penyewaan peralatan multimedia acara — layar LED, sound system, dan visual — yang melayani Tangerang & Jakarta.',
+    breadcrumbHome: 'Beranda',
+    breadcrumbAbout: 'Tentang',
+    eyebrow: 'Tentang Kami',
+    h1: 'Mitra Multimedia untuk Setiap Acara',
+    storyLead:
+      'Maxindo LED adalah penyedia jasa penyewaan peralatan multimedia acara yang berbasis di Tangerang dan melayani seluruh wilayah Jakarta serta sekitarnya.',
+    storyP1:
+      'Berawal dari kecintaan terhadap dunia panggung dan teknologi visual, kami membangun Maxindo LED untuk menjawab satu kebutuhan sederhana: membuat setiap acara terlihat dan terdengar luar biasa tanpa membuat penyelenggaranya repot. Dari pernikahan intim hingga konser besar, dari rapat korporat hingga peluncuran produk, kami menyediakan layar LED beresolusi tinggi, sistem tata suara profesional, pencahayaan panggung, serta dukungan teknis end-to-end. Tim kami menangani survei lokasi, pemasangan, pengoperasian selama acara, hingga pembongkaran — sehingga Anda bisa fokus pada hal yang paling penting: tamu dan momen Anda.',
+    storyP2:
+      'Selama bertahun-tahun melayani ratusan acara, kami belajar bahwa keandalan adalah segalanya. Peralatan yang gagal di tengah acara bukan hanya merusak momen, tetapi juga reputasi penyelenggara. Karena itu kami merawat seluruh inventaris kami dengan ketat, menyiapkan unit cadangan, dan menurunkan kru berpengalaman di setiap proyek. Kami percaya bahwa harga yang bersahabat dan kualitas yang tinggi bukanlah dua hal yang saling bertentangan — dan itulah yang kami buktikan pada setiap klien.',
+    whyTitle: 'Mengapa Memilih Kami',
+    values: [
+      {
+        title: 'Peralatan Andal & Terawat',
+        body: 'Layar LED, audio, dan pencahayaan kelas profesional yang diperiksa dan dirawat secara berkala, lengkap dengan unit cadangan untuk setiap acara.',
+      },
+      {
+        title: 'Kru Berpengalaman',
+        body: 'Teknisi yang menangani survei, pemasangan, pengoperasian, dan pembongkaran — Anda tidak perlu memikirkan sisi teknis sama sekali.',
+      },
+      {
+        title: 'Harga Transparan',
+        body: 'Penawaran jelas tanpa biaya tersembunyi, dengan paket yang bisa disesuaikan dengan skala dan anggaran acara Anda.',
+      },
+      {
+        title: 'Respons Cepat',
+        body: 'Balasan cepat lewat WhatsApp dan kesiagaan tim membuat persiapan acara Anda berjalan tanpa hambatan.',
+      },
+    ],
+    clientsTitle: 'Dipercaya untuk Berbagai Acara',
+    clientsIntro:
+      'Kami telah mendukung beragam jenis acara di Tangerang, Jakarta, dan sekitarnya:',
+    clients: [
+      'Pernikahan',
+      'Acara Korporat',
+      'Konser & Festival',
+      'Peluncuran Produk',
+      'Seminar & Konferensi',
+      'Acara Komunitas',
+    ],
+    teamTitle: 'Tim Kami',
+    teamBody:
+      'Di balik setiap acara yang sukses ada tim kecil yang berdedikasi — perancang teknis, operator, dan kru lapangan yang sama-sama menyukai pekerjaan mereka. Kami memperlakukan acara Anda seolah-olah itu acara kami sendiri, dengan perhatian pada setiap detail mulai dari kabel hingga kalibrasi warna layar.',
+    ctaTitle: 'Siap Mewujudkan Acara Anda?',
+    ctaBody:
+      'Ceritakan rencana acara Anda kepada kami, dan kami akan menyiapkan rekomendasi peralatan serta penawaran terbaik.',
+    waMessage:
+      'Halo Maxindo LED, saya ingin mengetahui lebih lanjut tentang layanan penyewaan peralatan acara Anda.',
+  },
+  en: {
+    title: 'About Maxindo LED | Event Multimedia Rental',
+    description:
+      'Meet Maxindo LED, a provider of event multimedia rental — LED screens, sound systems, and visuals — serving Tangerang & Jakarta.',
+    breadcrumbHome: 'Home',
+    breadcrumbAbout: 'About',
+    eyebrow: 'About Us',
+    h1: 'Your Multimedia Partner for Every Event',
+    storyLead:
+      'Maxindo LED is an event multimedia equipment rental provider based in Tangerang, serving the wider Jakarta area and beyond.',
+    storyP1:
+      "Born from a love of the stage and visual technology, we built Maxindo LED to answer one simple need: to make every event look and sound extraordinary without burdening the organizer. From intimate weddings to large concerts, from corporate meetings to product launches, we provide high-resolution LED screens, professional sound systems, stage lighting, and end-to-end technical support. Our team handles site surveys, installation, on-site operation during the event, and teardown — so you can focus on what matters most: your guests and your moment.",
+    storyP2:
+      'Across years of serving hundreds of events, we have learned that reliability is everything. Equipment that fails mid-event does not just ruin a moment — it damages the organizer’s reputation. That is why we maintain our entire inventory rigorously, prepare backup units, and deploy experienced crews on every project. We believe that friendly pricing and high quality are not opposing forces — and we prove that to every client we work with.',
+    whyTitle: 'Why Choose Us',
+    values: [
+      {
+        title: 'Reliable, Well-Maintained Gear',
+        body: 'Professional-grade LED, audio, and lighting that is regularly inspected and serviced, with backup units ready for every event.',
+      },
+      {
+        title: 'Experienced Crew',
+        body: 'Technicians who handle the survey, installation, operation, and teardown — you never have to think about the technical side.',
+      },
+      {
+        title: 'Transparent Pricing',
+        body: 'Clear quotes with no hidden fees, and packages that scale to the size and budget of your event.',
+      },
+      {
+        title: 'Fast Response',
+        body: 'Quick replies on WhatsApp and a ready team keep your event preparation running without friction.',
+      },
+    ],
+    clientsTitle: 'Trusted Across Many Events',
+    clientsIntro:
+      'We have supported a wide range of events across Tangerang, Jakarta, and the surrounding areas:',
+    clients: [
+      'Weddings',
+      'Corporate Events',
+      'Concerts & Festivals',
+      'Product Launches',
+      'Seminars & Conferences',
+      'Community Events',
+    ],
+    teamTitle: 'Our Team',
+    teamBody:
+      'Behind every successful event is a small, dedicated team — technical designers, operators, and field crew who genuinely love what they do. We treat your event as if it were our own, with attention to every detail from cabling to screen color calibration.',
+    ctaTitle: 'Ready to Bring Your Event to Life?',
+    ctaBody:
+      'Tell us about your event plans, and we will prepare equipment recommendations and our best quote.',
+    waMessage:
+      'Hello Maxindo LED, I would like to learn more about your event equipment rental services.',
+  },
+}[lang];
+
+const breadcrumbItems = [
+  { name: copy.breadcrumbHome, url: new URL(localizedPath(lang, '/'), SITE.url).href },
+  { name: copy.breadcrumbAbout, url: new URL(localizedPath(lang, '/about'), SITE.url).href },
+];
+---
+
+<Base title={copy.title} description={copy.description} lang={lang}>
+  <Organization slot="head" />
+  <Breadcrumb slot="head" items={breadcrumbItems} />
+
+  <!-- Company story -->
+  <section class="container-x py-16 md:py-24">
+    <div class="max-w-3xl">
+      <span
+        class="inline-block rounded-full border border-accent/40 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-accent"
+      >
+        {copy.eyebrow}
+      </span>
+      <h1 class="mt-5 text-4xl font-extrabold leading-tight md:text-5xl">
+        {copy.h1}
+      </h1>
+      <p class="mt-5 text-lg font-medium text-white">{copy.storyLead}</p>
+      <p class="mt-4 leading-relaxed text-muted">{copy.storyP1}</p>
+      <p class="mt-4 leading-relaxed text-muted">{copy.storyP2}</p>
+    </div>
+  </section>
+
+  <!-- Why choose us -->
+  <section class="container-x pb-16 md:pb-24">
+    <h2 class="text-2xl font-bold md:text-3xl">{copy.whyTitle}</h2>
+    <div class="mt-8 grid gap-6 sm:grid-cols-2">
+      {
+        copy.values.map((v) => (
+          <div class="rounded-xl border border-white/10 bg-surface p-6">
+            <h3 class="text-lg font-bold text-accent">{v.title}</h3>
+            <p class="mt-2 leading-relaxed text-muted">{v.body}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Clients / trust strip -->
+  <section class="container-x pb-16 md:pb-24">
+    <div class="rounded-xl border border-white/10 bg-surface p-6 md:p-8">
+      <h2 class="text-2xl font-bold">{copy.clientsTitle}</h2>
+      <p class="mt-2 text-muted">{copy.clientsIntro}</p>
+      <ul class="mt-5 flex flex-wrap gap-3">
+        {
+          copy.clients.map((c) => (
+            <li class="rounded-full border border-white/10 bg-bg px-4 py-1.5 text-sm font-medium text-muted">
+              {c}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- Team -->
+  <section class="container-x pb-16 md:pb-24">
+    <div class="max-w-3xl">
+      <h2 class="text-2xl font-bold md:text-3xl">{copy.teamTitle}</h2>
+      <p class="mt-4 leading-relaxed text-muted">{copy.teamBody}</p>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="container-x pb-16 md:pb-24">
+    <div
+      class="flex flex-col gap-4 rounded-xl border border-accent/30 bg-surface p-6 md:flex-row md:items-center md:justify-between md:p-8"
+    >
+      <div>
+        <h2 class="text-xl font-bold md:text-2xl">{copy.ctaTitle}</h2>
+        <p class="mt-1 text-muted">{copy.ctaBody}</p>
+      </div>
+      <div class="shrink-0">
+        <WhatsAppButton lang={lang} message={copy.waMessage} />
+      </div>
+    </div>
+  </section>
+</Base>

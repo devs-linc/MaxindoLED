@@ -1,0 +1,181 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import WhatsAppButton from '../../../components/WhatsAppButton.astro';
+import Breadcrumb from '../../../components/schema/Breadcrumb.astro';
+import FaqPage from '../../../components/schema/FaqPage.astro';
+import { localizedPath } from '../../../i18n/utils';
+import type { Lang } from '../../../i18n/ui';
+import { SITE } from '../../../consts';
+
+export async function getStaticPaths() {
+  const all = await getCollection('services');
+  return all.map((entry) => {
+    const [lang, ...rest] = entry.id.split('/');
+    const slug = rest.join('/');
+    return { params: { lang, slug }, props: { entry } };
+  });
+}
+
+const lang = Astro.params.lang as Lang;
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+
+const slug = entry.id.slice(lang.length + 1);
+
+// Related services: all others in the same locale, ordered.
+const related = (await getCollection('services'))
+  .filter((e) => e.id.startsWith(lang + '/') && e.id !== entry.id)
+  .map((e) => ({ ...e, slug: e.id.slice(lang.length + 1) }))
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 3);
+
+const copy = {
+  id: {
+    eyebrow: 'Layanan',
+    breadcrumbHome: 'Beranda',
+    breadcrumbServices: 'Layanan',
+    relatedTitle: 'Layanan Lainnya',
+    ctaTitle: 'Tertarik dengan layanan ini?',
+    ctaBody:
+      'Tim kami siap membantu Anda dengan konsultasi gratis dan penawaran harga terbaik.',
+  },
+  en: {
+    eyebrow: 'Service',
+    breadcrumbHome: 'Home',
+    breadcrumbServices: 'Services',
+    relatedTitle: 'Other Services',
+    ctaTitle: 'Interested in this service?',
+    ctaBody:
+      'Our team is ready to help you with a free consultation and the best price quote.',
+  },
+}[lang];
+
+const title = `${entry.data.name} | Maxindo LED`;
+const description = entry.data.description;
+
+// Per-service FAQ (3 items), localized.
+const name = entry.data.name;
+const faqs =
+  lang === 'id'
+    ? [
+        {
+          q: `Berapa harga sewa untuk ${name}?`,
+          a: `Harga ${name} bervariasi tergantung skala, durasi, dan lokasi acara Anda. Hubungi kami via WhatsApp untuk mendapatkan penawaran yang disesuaikan dengan kebutuhan Anda.`,
+        },
+        {
+          q: `Apakah layanan ${name} tersedia di Tangerang dan Jakarta?`,
+          a: `Ya. Maxindo LED melayani ${name} di seluruh wilayah Tangerang, Jakarta, dan sekitarnya, termasuk pengiriman, instalasi, dan dukungan teknis di lokasi.`,
+        },
+        {
+          q: `Apakah ${name} sudah termasuk teknisi?`,
+          a: `Tentu. Setiap layanan kami didukung oleh teknisi berpengalaman yang menangani instalasi, pengoperasian, dan bongkar pasang agar acara Anda berjalan lancar.`,
+        },
+      ]
+    : [
+        {
+          q: `How much does ${name} cost?`,
+          a: `Pricing for ${name} varies depending on the scale, duration, and location of your event. Contact us via WhatsApp for a quote tailored to your needs.`,
+        },
+        {
+          q: `Is ${name} available in Tangerang and Jakarta?`,
+          a: `Yes. Maxindo LED provides ${name} across Tangerang, Jakarta, and the surrounding areas, including delivery, installation, and on-site technical support.`,
+        },
+        {
+          q: `Does ${name} include a technician?`,
+          a: `Absolutely. Every service is backed by experienced technicians who handle setup, operation, and teardown so your event runs smoothly.`,
+        },
+      ];
+
+const breadcrumbItems = [
+  { name: copy.breadcrumbHome, url: `${SITE.url}${localizedPath(lang, '/')}` },
+  {
+    name: copy.breadcrumbServices,
+    url: `${SITE.url}${localizedPath(lang, '/services/')}`,
+  },
+  {
+    name: entry.data.name,
+    url: `${SITE.url}${localizedPath(lang, '/services/' + slug)}`,
+  },
+];
+
+const ctaMessage =
+  lang === 'id'
+    ? `Halo Maxindo LED, saya ingin bertanya tentang layanan ${name}.`
+    : `Hello Maxindo LED, I would like to ask about your ${name} service.`;
+---
+
+<Base title={title} description={description} lang={lang}>
+  <Breadcrumb slot="head" items={breadcrumbItems} />
+  <FaqPage slot="head" faqs={faqs} />
+
+  <article class="container-x py-16 md:py-24">
+    <nav class="mb-8 text-sm text-muted" aria-label="Breadcrumb">
+      <a href={localizedPath(lang, '/')} class="hover:text-accent">
+        {copy.breadcrumbHome}
+      </a>
+      <span class="px-2">/</span>
+      <a href={localizedPath(lang, '/services/')} class="hover:text-accent">
+        {copy.breadcrumbServices}
+      </a>
+      <span class="px-2">/</span>
+      <span class="text-white">{entry.data.name}</span>
+    </nav>
+
+    <header class="max-w-3xl">
+      <span
+        class="inline-block rounded-full border border-accent/40 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-accent"
+      >
+        {copy.eyebrow}
+      </span>
+      <h1
+        class="mt-5 bg-accent-grad bg-clip-text text-4xl font-extrabold leading-tight text-transparent md:text-5xl"
+      >
+        {entry.data.name}
+      </h1>
+      <p class="mt-5 text-lg text-muted">{entry.data.description}</p>
+      <div class="mt-8">
+        <WhatsAppButton lang={lang} message={ctaMessage} />
+      </div>
+    </header>
+
+    <div
+      class="prose prose-invert mt-12 max-w-3xl prose-headings:text-white prose-h2:mt-10 prose-h2:text-2xl prose-h2:font-bold prose-a:text-accent prose-strong:text-white prose-li:text-muted prose-p:text-muted"
+    >
+      <Content />
+    </div>
+
+    <section class="mt-16 border-t border-white/10 pt-12">
+      <h2 class="text-2xl font-bold text-white">{copy.relatedTitle}</h2>
+      <ul class="mt-6 grid gap-6 sm:grid-cols-3">
+        {
+          related.map((service) => (
+            <li>
+              <a
+                href={localizedPath(lang, '/services/' + service.slug)}
+                class="group flex h-full flex-col rounded-xl border border-white/10 bg-surface p-6 transition hover:border-accent/50"
+              >
+                <h3 class="text-lg font-bold text-white group-hover:text-accent">
+                  {service.data.name}
+                </h3>
+                <p class="mt-2 line-clamp-3 text-sm text-muted">
+                  {service.data.description}
+                </p>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <div
+      class="mt-16 flex flex-col items-start gap-3 rounded-xl border border-white/10 bg-surface p-8"
+    >
+      <p class="text-xl font-bold text-white">{copy.ctaTitle}</p>
+      <p class="text-muted">{copy.ctaBody}</p>
+      <div class="mt-4">
+        <WhatsAppButton lang={lang} message={ctaMessage} />
+      </div>
+    </div>
+  </article>
+</Base>

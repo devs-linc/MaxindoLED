@@ -1,0 +1,197 @@
+---
+import { getCollection, render } from 'astro:content';
+import { Image, getImage } from 'astro:assets';
+import Base from '../../../layouts/Base.astro';
+import WhatsAppButton from '../../../components/WhatsAppButton.astro';
+import Article from '../../../components/schema/Article.astro';
+import Breadcrumb from '../../../components/schema/Breadcrumb.astro';
+import { localizedPath } from '../../../i18n/utils';
+import { SITE } from '../../../consts';
+import type { Lang } from '../../../i18n/ui';
+
+export async function getStaticPaths() {
+  const all = await getCollection('articles');
+  return all.map((entry) => {
+    const [lang, ...rest] = entry.id.split('/');
+    const slug = rest.join('/');
+    return {
+      params: { lang, slug },
+      props: { entry },
+    };
+  });
+}
+
+const lang = Astro.params.lang as Lang;
+const { entry } = Astro.props;
+const { data } = entry;
+const slug = entry.id.slice(lang.length + 1);
+
+const { Content } = await render(entry);
+
+// Resolve the optimized cover to an absolute URL for JSON-LD / Open Graph.
+const resolvedCover = await getImage({ src: data.cover, width: 1200 });
+const coverUrl = new URL(resolvedCover.src, SITE.url).href;
+
+const dateLocale = lang === 'id' ? 'id-ID' : 'en-US';
+const fmtDate = (d: Date) =>
+  d.toLocaleDateString(dateLocale, {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+
+// Related: other articles in the same locale, newest first.
+const related = (await getCollection('articles'))
+  .filter((e) => e.id.startsWith(lang + '/') && e.id !== entry.id)
+  .sort((a, b) => b.data.datePublished.getTime() - a.data.datePublished.getTime())
+  .slice(0, 3)
+  .map((e) => ({ ...e, slug: e.id.slice(lang.length + 1) }));
+
+const copy =
+  lang === 'id'
+    ? {
+        home: 'Beranda',
+        articles: 'Artikel',
+        related: 'Artikel Terkait',
+        ctaTitle: 'Butuh bantuan untuk acara Anda?',
+        ctaIntro:
+          'Diskusikan kebutuhan LED screen dan audio visual Anda dengan tim Maxindo LED. Konsultasi gratis dan penawaran harga terbaik.',
+      }
+    : {
+        home: 'Home',
+        articles: 'Articles',
+        related: 'Related Articles',
+        ctaTitle: 'Need help with your event?',
+        ctaIntro:
+          'Discuss your LED screen and audio visual needs with the Maxindo LED team. Free consultation and our best price offer.',
+      };
+
+const title = `${data.title} | Maxindo LED`;
+
+const breadcrumbItems = [
+  { name: copy.home, url: new URL(localizedPath(lang, '/'), SITE.url).href },
+  {
+    name: copy.articles,
+    url: new URL(localizedPath(lang, '/articles'), SITE.url).href,
+  },
+  {
+    name: data.title,
+    url: new URL(localizedPath(lang, '/articles/' + slug), SITE.url).href,
+  },
+];
+---
+
+<Base title={title} description={data.description} lang={lang} image={coverUrl}>
+  <Article
+    slot="head"
+    title={data.title}
+    datePublished={data.datePublished}
+    image={coverUrl}
+  />
+  <Breadcrumb slot="head" items={breadcrumbItems} />
+
+  <article class="container-x py-16 md:py-24">
+    <nav aria-label="Breadcrumb" class="mb-8 text-sm text-muted">
+      <ol class="flex flex-wrap items-center gap-2">
+        <li>
+          <a href={localizedPath(lang, '/')} class="hover:text-accent">{copy.home}</a>
+        </li>
+        <li aria-hidden="true" class="text-white/30">/</li>
+        <li>
+          <a href={localizedPath(lang, '/articles')} class="hover:text-accent">
+            {copy.articles}
+          </a>
+        </li>
+        <li aria-hidden="true" class="text-white/30">/</li>
+        <li class="text-white/70 line-clamp-1">{data.title}</li>
+      </ol>
+    </nav>
+
+    <div class="mx-auto max-w-3xl">
+      <header>
+        <time
+          datetime={data.datePublished.toISOString()}
+          class="text-xs font-semibold uppercase tracking-wide text-accent"
+        >
+          {fmtDate(data.datePublished)}
+        </time>
+        <h1 class="mt-3 text-3xl font-extrabold leading-tight md:text-5xl">
+          {data.title}
+        </h1>
+        <p class="mt-4 text-lg text-muted">{data.description}</p>
+      </header>
+
+      <div class="mt-8 overflow-hidden rounded-2xl border border-white/10 bg-surface">
+        <Image
+          src={data.cover}
+          alt={data.title}
+          widths={[640, 1024, 1200]}
+          sizes="(min-width: 768px) 48rem, 100vw"
+          class="aspect-[16/9] w-full object-cover"
+        />
+      </div>
+
+      <div
+        class="mt-10 space-y-4 text-muted leading-relaxed [&_h2]:text-white [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:mt-8 [&_a]:text-accent [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-1 [&_strong]:text-white"
+      >
+        <Content />
+      </div>
+    </div>
+
+    {
+      related.length > 0 && (
+        <section class="mx-auto mt-16 max-w-3xl border-t border-white/10 pt-10">
+          <h2 class="text-2xl font-bold">{copy.related}</h2>
+          <div class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
+            {related.map((r) => (
+              <a
+                href={localizedPath(lang, '/articles/' + r.slug)}
+                class="group flex flex-col overflow-hidden rounded-xl border border-white/10 bg-surface transition-colors hover:border-accent"
+              >
+                <div class="aspect-[16/9] overflow-hidden bg-bg">
+                  <Image
+                    src={r.data.cover}
+                    alt={r.data.title}
+                    widths={[300, 600]}
+                    sizes="(min-width: 640px) 16rem, 100vw"
+                    class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
+                </div>
+                <div class="flex flex-1 flex-col p-4">
+                  <h3 class="text-sm font-bold text-white transition-colors group-hover:text-accent">
+                    {r.data.title}
+                  </h3>
+                  <time
+                    datetime={r.data.datePublished.toISOString()}
+                    class="mt-2 text-xs text-muted"
+                  >
+                    {fmtDate(r.data.datePublished)}
+                  </time>
+                </div>
+              </a>
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    <section class="mx-auto mt-16 max-w-3xl">
+      <div class="relative overflow-hidden rounded-2xl border border-white/10 bg-surface p-8 md:p-12">
+        <div
+          aria-hidden="true"
+          class="pointer-events-none absolute -top-24 -right-16 h-64 w-64 rounded-full bg-accent-grad opacity-20 blur-3xl"
+        >
+        </div>
+        <div class="relative">
+          <h2 class="bg-accent-grad bg-clip-text text-2xl font-extrabold text-transparent md:text-3xl">
+            {copy.ctaTitle}
+          </h2>
+          <p class="mt-4 text-muted">{copy.ctaIntro}</p>
+          <div class="mt-8">
+            <WhatsAppButton lang={lang} />
+          </div>
+        </div>
+      </div>
+    </section>
+  </article>
+</Base>

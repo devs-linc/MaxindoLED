@@ -1,0 +1,321 @@
+---
+import Base from '../../layouts/Base.astro';
+import WhatsAppButton from '../../components/WhatsAppButton.astro';
+import LocalBusiness from '../../components/schema/LocalBusiness.astro';
+import Breadcrumb from '../../components/schema/Breadcrumb.astro';
+import { SITE, waLink } from '../../consts';
+import { useTranslations, localizedPath } from '../../i18n/utils';
+import type { Lang } from '../../i18n/ui';
+
+export function getStaticPaths() {
+  return [{ params: { lang: 'id' } }, { params: { lang: 'en' } }];
+}
+
+const lang = Astro.params.lang as Lang;
+const t = useTranslations(lang);
+
+const copy = {
+  id: {
+    title: 'Kontak Maxindo LED | Sewa LED Screen & Audio Visual',
+    description:
+      'Hubungi Maxindo LED untuk penyewaan layar LED, sound system, dan multimedia di Tangerang & Jakarta. WhatsApp, telepon, email, dan alamat lengkap kami.',
+    breadcrumbHome: 'Beranda',
+    breadcrumbContact: 'Kontak',
+    eyebrow: 'Hubungi Kami',
+    h1: 'Mari Bicarakan Acara Anda',
+    lead:
+      'Punya rencana acara dalam waktu dekat? Tim Maxindo LED siap membantu Anda memilih layar LED, sound system, dan peralatan multimedia yang tepat sesuai konsep, lokasi, dan anggaran. Cara tercepat untuk mendapat penawaran adalah lewat WhatsApp — kami biasanya membalas dalam hitungan menit pada jam kerja. Anda juga bisa menelepon, mengirim email, atau mengisi formulir di bawah ini, dan kami akan menghubungi Anda kembali secepatnya. Kami melayani area Tangerang, Jakarta, dan sekitarnya, baik untuk acara korporat, pernikahan, konser, peluncuran produk, maupun acara komunitas. Beri tahu kami tanggal, lokasi, dan kebutuhan teknis acara Anda agar kami dapat menyiapkan rekomendasi paket dan estimasi harga yang paling sesuai untuk Anda.',
+    napTitle: 'Informasi Kontak',
+    addressLabel: 'Alamat',
+    whatsappLabel: 'WhatsApp',
+    phoneLabel: 'Telepon',
+    emailLabel: 'Email',
+    hoursTitle: 'Jam Operasional',
+    hoursValue: 'Senin – Minggu, 08.00 – 22.00 WIB',
+    hoursNote: 'Buka setiap hari, termasuk akhir pekan dan hari libur.',
+    socialTitle: 'Ikuti Kami',
+    mapTitle: 'Peta lokasi Maxindo LED',
+    mapHeading: 'Lokasi Kami',
+    formTitle: 'Kirim Permintaan Penawaran',
+    formIntro:
+      'Lebih suka tidak menggunakan WhatsApp? Isi formulir singkat ini dan tim kami akan menghubungi Anda kembali.',
+    nameLabel: 'Nama',
+    waNumberLabel: 'Nomor WhatsApp',
+    dateLabel: 'Tanggal Acara',
+    messageLabel: 'Pesan / Kebutuhan',
+    messagePlaceholder:
+      'Ceritakan jenis acara, lokasi, dan peralatan yang Anda butuhkan...',
+    submit: 'Kirim Permintaan',
+    primaryTitle: 'Cara Tercepat: WhatsApp',
+    primaryText:
+      'Untuk respons paling cepat dan penawaran instan, chat langsung dengan tim kami di WhatsApp.',
+    waMessage:
+      'Halo Maxindo LED, saya ingin meminta penawaran untuk penyewaan peralatan acara.',
+  },
+  en: {
+    title: 'Contact Maxindo LED | LED Screen & Audio Visual Rental',
+    description:
+      'Get in touch with Maxindo LED for LED screen, sound system, and multimedia rental in Tangerang & Jakarta. WhatsApp, phone, email, and our full address.',
+    breadcrumbHome: 'Home',
+    breadcrumbContact: 'Contact',
+    eyebrow: 'Get In Touch',
+    h1: "Let's Talk About Your Event",
+    lead:
+      "Planning an event soon? The Maxindo LED team is ready to help you choose the right LED screens, sound systems, and multimedia equipment to match your concept, venue, and budget. The fastest way to get a quote is via WhatsApp — we usually reply within minutes during working hours. You can also call us, send an email, or fill in the form below, and we will get back to you as soon as possible. We serve Tangerang, Jakarta, and the surrounding areas for corporate events, weddings, concerts, product launches, and community gatherings alike. Just let us know the date, location, and technical requirements of your event so we can prepare the package recommendations and price estimate that fit you best.",
+    napTitle: 'Contact Information',
+    addressLabel: 'Address',
+    whatsappLabel: 'WhatsApp',
+    phoneLabel: 'Phone',
+    emailLabel: 'Email',
+    hoursTitle: 'Opening Hours',
+    hoursValue: 'Monday – Sunday, 08:00 – 22:00 (WIB)',
+    hoursNote: 'Open every day, including weekends and public holidays.',
+    socialTitle: 'Follow Us',
+    mapTitle: 'Map showing the location of Maxindo LED',
+    mapHeading: 'Our Location',
+    formTitle: 'Send a Quote Request',
+    formIntro:
+      'Prefer not to use WhatsApp? Fill in this short form and our team will get back to you.',
+    nameLabel: 'Name',
+    waNumberLabel: 'WhatsApp Number',
+    dateLabel: 'Event Date',
+    messageLabel: 'Message / Requirements',
+    messagePlaceholder:
+      'Tell us your event type, location, and the equipment you need...',
+    submit: 'Send Request',
+    primaryTitle: 'Fastest Way: WhatsApp',
+    primaryText:
+      'For the quickest response and an instant quote, chat directly with our team on WhatsApp.',
+    waMessage:
+      'Hello Maxindo LED, I would like to request a quote for event equipment rental.',
+  },
+}[lang];
+
+const fullAddress = `${SITE.address.street}, ${SITE.address.locality}, ${SITE.address.region} ${SITE.address.postalCode}`;
+const mapSrc = `https://www.google.com/maps?q=${encodeURIComponent(fullAddress)}&output=embed`;
+
+const breadcrumbItems = [
+  { name: copy.breadcrumbHome, url: new URL(localizedPath(lang, '/'), SITE.url).href },
+  { name: copy.breadcrumbContact, url: new URL(localizedPath(lang, '/contact'), SITE.url).href },
+];
+
+const phoneHref = `tel:${SITE.phoneDisplay.replace(/[^+\d]/g, '')}`;
+const emailHref = `mailto:${SITE.email}`;
+const waHref = waLink(copy.waMessage);
+
+const socials = [
+  { label: 'Instagram', href: SITE.social.instagram },
+  { label: 'Facebook', href: SITE.social.facebook },
+  { label: 'TikTok', href: SITE.social.tiktok },
+  { label: 'YouTube', href: SITE.social.youtube },
+];
+---
+
+<Base title={copy.title} description={copy.description} lang={lang}>
+  <LocalBusiness slot="head" />
+  <Breadcrumb slot="head" items={breadcrumbItems} />
+
+  <!-- Intro -->
+  <section class="container-x py-16 md:py-24">
+    <div class="max-w-3xl">
+      <span
+        class="inline-block rounded-full border border-accent/40 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-accent"
+      >
+        {copy.eyebrow}
+      </span>
+      <h1 class="mt-5 text-4xl font-extrabold leading-tight md:text-5xl">
+        {copy.h1}
+      </h1>
+      <p class="mt-5 text-lg leading-relaxed text-muted">{copy.lead}</p>
+    </div>
+
+    <!-- Primary WhatsApp path -->
+    <div
+      class="mt-10 flex flex-col gap-4 rounded-xl border border-accent/30 bg-surface p-6 md:flex-row md:items-center md:justify-between"
+    >
+      <div>
+        <h2 class="text-xl font-bold">{copy.primaryTitle}</h2>
+        <p class="mt-1 text-muted">{copy.primaryText}</p>
+      </div>
+      <div class="shrink-0">
+        <WhatsAppButton lang={lang} message={copy.waMessage} />
+      </div>
+    </div>
+  </section>
+
+  <!-- NAP + hours + social -->
+  <section class="container-x pb-16 md:pb-24">
+    <div class="grid gap-6 md:grid-cols-3">
+      <!-- Contact details -->
+      <div class="rounded-xl border border-white/10 bg-surface p-6 md:col-span-2">
+        <h2 class="text-xl font-bold">{copy.napTitle}</h2>
+        <dl class="mt-5 space-y-5">
+          <div>
+            <dt class="text-sm font-semibold uppercase tracking-wide text-accent">
+              {copy.addressLabel}
+            </dt>
+            <dd class="mt-1 not-italic text-muted">
+              <address class="not-italic">
+                {SITE.address.street}<br />
+                {SITE.address.locality}<br />
+                {SITE.address.region} {SITE.address.postalCode}
+              </address>
+            </dd>
+          </div>
+          <div>
+            <dt class="text-sm font-semibold uppercase tracking-wide text-accent">
+              {copy.whatsappLabel}
+            </dt>
+            <dd class="mt-1">
+              <a
+                class="text-white transition-colors hover:text-accent"
+                rel="nofollow"
+                target="_blank"
+                href={waHref}
+              >
+                {SITE.phoneDisplay}
+              </a>
+            </dd>
+          </div>
+          <div>
+            <dt class="text-sm font-semibold uppercase tracking-wide text-accent">
+              {copy.phoneLabel}
+            </dt>
+            <dd class="mt-1">
+              <a class="text-white transition-colors hover:text-accent" href={phoneHref}>
+                {SITE.phoneDisplay}
+              </a>
+            </dd>
+          </div>
+          <div>
+            <dt class="text-sm font-semibold uppercase tracking-wide text-accent">
+              {copy.emailLabel}
+            </dt>
+            <dd class="mt-1">
+              <a class="text-white transition-colors hover:text-accent" href={emailHref}>
+                {SITE.email}
+              </a>
+            </dd>
+          </div>
+        </dl>
+      </div>
+
+      <!-- Hours + social -->
+      <div class="flex flex-col gap-6">
+        <div class="rounded-xl border border-white/10 bg-surface p-6">
+          <h2 class="text-xl font-bold">{copy.hoursTitle}</h2>
+          <p class="mt-3 font-semibold text-white">{copy.hoursValue}</p>
+          <p class="mt-1 text-sm text-muted">{copy.hoursNote}</p>
+        </div>
+        <div class="rounded-xl border border-white/10 bg-surface p-6">
+          <h2 class="text-xl font-bold">{copy.socialTitle}</h2>
+          <ul class="mt-3 space-y-2">
+            {
+              socials.map((s) => (
+                <li>
+                  <a
+                    class="text-muted transition-colors hover:text-accent"
+                    rel="noopener"
+                    target="_blank"
+                    href={s.href}
+                  >
+                    {s.label}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Map -->
+  <section class="container-x pb-16 md:pb-24">
+    <h2 class="text-2xl font-bold">{copy.mapHeading}</h2>
+    <div class="mt-5 overflow-hidden rounded-xl border border-white/10">
+      <iframe
+        src={mapSrc}
+        title={copy.mapTitle}
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        width="100%"
+        height="420"
+        style="border:0; display:block;"
+        allowfullscreen
+      ></iframe>
+    </div>
+  </section>
+
+  <!-- Enquiry form -->
+  <section class="container-x pb-16 md:pb-24">
+    <div class="mx-auto max-w-2xl rounded-xl border border-white/10 bg-surface p-6 md:p-8">
+      <h2 class="text-2xl font-bold">{copy.formTitle}</h2>
+      <p class="mt-2 text-muted">{copy.formIntro}</p>
+
+      {/* TODO: Replace `your-id` with the real Formspree form ID before going live. */}
+      <form
+        class="mt-6 space-y-5"
+        action="https://formspree.io/f/your-id"
+        method="POST"
+      >
+        <div>
+          <label class="block text-sm font-semibold" for="name">{copy.nameLabel}</label>
+          <input
+            class="mt-1 w-full rounded-lg border border-white/10 bg-bg px-3 py-2 text-white outline-none focus:border-accent"
+            id="name"
+            name="name"
+            type="text"
+            required
+          />
+        </div>
+        <div>
+          <label class="block text-sm font-semibold" for="whatsapp">
+            {copy.waNumberLabel}
+          </label>
+          <input
+            class="mt-1 w-full rounded-lg border border-white/10 bg-bg px-3 py-2 text-white outline-none focus:border-accent"
+            id="whatsapp"
+            name="whatsapp"
+            type="tel"
+            inputmode="tel"
+            required
+          />
+        </div>
+        <div>
+          <label class="block text-sm font-semibold" for="event-date">
+            {copy.dateLabel}
+          </label>
+          <input
+            class="mt-1 w-full rounded-lg border border-white/10 bg-bg px-3 py-2 text-white outline-none focus:border-accent"
+            id="event-date"
+            name="event_date"
+            type="date"
+          />
+        </div>
+        <div>
+          <label class="block text-sm font-semibold" for="message">
+            {copy.messageLabel}
+          </label>
+          <textarea
+            class="mt-1 w-full rounded-lg border border-white/10 bg-bg px-3 py-2 text-white outline-none focus:border-accent"
+            id="message"
+            name="message"
+            rows="4"
+            placeholder={copy.messagePlaceholder}
+            required></textarea>
+        </div>
+        <button
+          class="rounded-lg bg-accent-grad px-5 py-2.5 font-bold text-white"
+          type="submit"
+        >
+          {copy.submit}
+        </button>
+      </form>
+
+      <div class="mt-6 border-t border-white/10 pt-6">
+        <WhatsAppButton lang={lang} message={copy.waMessage} />
+      </div>
+    </div>
+  </section>
+</Base>

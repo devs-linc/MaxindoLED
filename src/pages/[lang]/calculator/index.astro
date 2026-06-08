@@ -1,0 +1,68 @@
+---
+import Base from '../../../layouts/Base.astro';
+import Calculator from '../../../components/islands/Calculator';
+import { localizedPath } from '../../../i18n/utils';
+import type { Lang } from '../../../i18n/ui';
+
+export function getStaticPaths() {
+  return [{ params: { lang: 'id' } }, { params: { lang: 'en' } }];
+}
+
+const lang = Astro.params.lang as Lang;
+
+const copy = {
+  id: {
+    title: 'Kalkulator Sewa Peralatan | Maxindo LED',
+    description:
+      'Hitung perkiraan biaya sewa LED screen, sound system, lighting, dan peralatan acara lainnya secara instan, lalu kirim penawaran via WhatsApp.',
+    eyebrow: 'Estimasi Cepat',
+    h1: 'Kalkulator Sewa Peralatan',
+    intro:
+      'Pilih peralatan yang Anda butuhkan, atur jumlah dan durasi sewa, lalu lihat perkiraan total secara langsung. Setelah siap, kirim daftar penawaran ke tim kami melalui WhatsApp untuk konfirmasi ketersediaan dan harga final.',
+    note:
+      'Catatan: angka di atas hanya perkiraan berdasarkan harga harian standar dan belum termasuk transport, instalasi, atau diskon paket. Penawaran final akan kami kirimkan via WhatsApp.',
+    breadcrumbHome: 'Beranda',
+    breadcrumbCurrent: 'Kalkulator Sewa',
+  },
+  en: {
+    title: 'Equipment Rental Calculator | Maxindo LED',
+    description:
+      'Instantly estimate the rental cost of LED screens, sound systems, lighting, and other event gear, then send your quote via WhatsApp.',
+    eyebrow: 'Quick Estimate',
+    h1: 'Equipment Rental Calculator',
+    intro:
+      'Pick the equipment you need, set quantities and rental duration, and watch the estimated total update live. When you are ready, send the itemized quote to our team on WhatsApp to confirm availability and the final price.',
+    note:
+      'Note: the figures above are an estimate based on standard daily rates and exclude transport, installation, and package discounts. We will send the final quote via WhatsApp.',
+    breadcrumbHome: 'Home',
+    breadcrumbCurrent: 'Rental Calculator',
+  },
+}[lang];
+---
+
+<Base title={copy.title} description={copy.description} lang={lang}>
+  <section class="container-x py-16 md:py-24">
+    <nav aria-label="Breadcrumb" class="mb-6 text-sm text-muted">
+      <a href={localizedPath(lang, '/')} class="hover:text-accent">{copy.breadcrumbHome}</a>
+      <span class="px-2">/</span>
+      <span class="text-white/80">{copy.breadcrumbCurrent}</span>
+    </nav>
+
+    <div class="max-w-2xl">
+      <span
+        class="inline-block rounded-full border border-accent/40 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-accent"
+      >
+        {copy.eyebrow}
+      </span>
+      <h1 class="mt-5 text-3xl font-extrabold leading-tight md:text-5xl">
+        {copy.h1}
+      </h1>
+      <p class="mt-5 text-lg text-muted">{copy.intro}</p>
+    </div>
+
+    <div class="mt-10 max-w-3xl">
+      <Calculator client:load lang={lang} />
+      <p class="mt-4 text-sm text-muted">{copy.note}</p>
+    </div>
+  </section>
+</Base>

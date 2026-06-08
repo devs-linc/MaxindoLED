@@ -1,8 +1,14 @@
 ---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
-import WhatsAppButton from '../../components/WhatsAppButton.astro';
 import LocalBusiness from '../../components/schema/LocalBusiness.astro';
-import { useTranslations } from '../../i18n/utils';
+import Hero from '../../components/Hero.astro';
+import ServiceCard from '../../components/ServiceCard.astro';
+import EventTile from '../../components/EventTile.astro';
+import Testimonials from '../../components/Testimonials.astro';
+import WhatsAppButton from '../../components/WhatsAppButton.astro';
+import { useTranslations, localizedPath } from '../../i18n/utils';
 import type { Lang } from '../../i18n/ui';
 
 export function getStaticPaths() {
@@ -12,30 +18,256 @@ export function getStaticPaths() {
 const lang = Astro.params.lang as Lang;
 const t = useTranslations(lang);
 
+// --- Content collections (filtered + sorted for this locale) ---
+const slugOf = (id: string) => id.slice(lang.length + 1);
+
+const services = (await getCollection('services'))
+  .filter((e) => e.id.startsWith(lang + '/'))
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 6);
+
+const equipment = (await getCollection('equipment'))
+  .filter((e) => e.id.startsWith(lang + '/'))
+  .sort((a, b) => a.data.name.localeCompare(b.data.name))
+  .slice(0, 4);
+
+const eventTypes = (await getCollection('eventTypes')).filter((e) =>
+  e.id.startsWith(lang + '/')
+);
+
+// --- Localized microcopy ---
+const copy =
+  lang === 'id'
+    ? {
+        trust: 'Dipercaya oleh ratusan event organizer, perusahaan, dan pasangan di seluruh Jabodetabek',
+        servicesTitle: 'Layanan Kami',
+        servicesIntro:
+          'Solusi audio visual lengkap dalam satu tangan, mulai dari layar LED, sound system, hingga lighting dan multimedia. Tim teknisi kami menangani semuanya dari awal sampai bongkar pasang.',
+        equipmentTitle: 'Peralatan Unggulan',
+        equipmentIntro:
+          'Unit terawat dan dikalibrasi rutin, siap untuk acara indoor maupun outdoor. Harga sewa transparan, tanpa biaya tersembunyi.',
+        equipmentCta: 'Lihat semua peralatan',
+        perDay: '/hari',
+        eventsTitle: 'Jenis Acara',
+        eventsIntro:
+          'Dari konser megah hingga wedding intim, kami punya pengalaman dan perlengkapan untuk setiap momen.',
+        galleryTitle: 'Lihat Hasil Kerja Kami',
+        galleryIntro:
+          'Ratusan acara telah kami sukseskan. Jelajahi portofolio kami untuk melihat kualitas instalasi LED screen dan tata panggung Maxindo LED.',
+        galleryCta: 'Lihat Portofolio',
+        testimonialsTitle: 'Apa Kata Klien Kami',
+        testimonialsIntro:
+          'Kepuasan klien adalah prioritas kami. Berikut pengalaman mereka bekerja sama dengan Maxindo LED.',
+        ctaTitle: 'Siap Membuat Acara Anda Berkesan?',
+        ctaIntro:
+          'Konsultasi gratis dan penawaran harga terbaik. Tim kami siap membantu menentukan paket LED screen dan audio visual yang paling sesuai untuk venue serta anggaran Anda.',
+        meta: 'Sewa LED screen, videotron, sound system & lighting profesional di Tangerang & Jakarta. Harga bersahabat, teknisi berpengalaman, unit terawat. Konsultasi gratis.',
+      }
+    : {
+        trust: 'Trusted by hundreds of event organizers, companies, and couples across Greater Jakarta',
+        servicesTitle: 'Our Services',
+        servicesIntro:
+          'Complete audio visual solutions under one roof, from LED screens and sound systems to lighting and multimedia. Our crew handles everything from planning to teardown.',
+        equipmentTitle: 'Featured Equipment',
+        equipmentIntro:
+          'Well-maintained, regularly calibrated units ready for indoor and outdoor events. Transparent rental pricing with no hidden fees.',
+        equipmentCta: 'Browse all equipment',
+        perDay: '/day',
+        eventsTitle: 'Event Types',
+        eventsIntro:
+          'From grand concerts to intimate weddings, we have the experience and gear for every occasion.',
+        galleryTitle: 'See Our Work',
+        galleryIntro:
+          'We have powered hundreds of events. Explore our portfolio to see the quality of Maxindo LED screen installations and stage production.',
+        galleryCta: 'View Portfolio',
+        testimonialsTitle: 'What Our Clients Say',
+        testimonialsIntro:
+          'Client satisfaction is our priority. Here is what they say about working with Maxindo LED.',
+        ctaTitle: 'Ready to Make Your Event Unforgettable?',
+        ctaIntro:
+          'Free consultation and our best price offer. Our team is ready to help you choose the LED screen and audio visual package that fits your venue and budget.',
+        meta: 'Professional LED screen, videotron, sound system & lighting rental in Tangerang & Jakarta. Friendly pricing, experienced technicians, well-kept units. Free quote.',
+      };
+
+const ctaMessage =
+  lang === 'id'
+    ? 'Halo Maxindo LED, saya mau konsultasi dan minta penawaran harga untuk acara saya.'
+    : 'Hello Maxindo LED, I would like a consultation and a price quote for my event.';
+
 const title = `${t('hero.title')} | Maxindo LED`;
-const description = t('hero.subtitle');
+const description = copy.meta;
 ---
 
 <Base title={title} description={description} lang={lang}>
   <LocalBusiness slot="head" />
 
-  <section class="container-x py-20 md:py-28">
-    <div class="max-w-3xl">
-      <span
-        class="inline-block rounded-full border border-accent/40 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-accent"
+  <!-- HERO -->
+  <Hero lang={lang} title={t('hero.title')} subtitle={t('hero.subtitle')} />
+
+  <!-- TRUST STRIP -->
+  <section class="border-b border-white/10 bg-surface/40">
+    <div class="container-x py-6">
+      <p
+        class="text-center text-xs font-medium uppercase tracking-widest text-muted"
       >
-        Tangerang &amp; Jakarta
-      </span>
-      <h1
-        class="mt-5 bg-accent-grad bg-clip-text text-4xl font-extrabold leading-tight text-transparent md:text-6xl"
-      >
-        {t('hero.title')}
-      </h1>
-      <p class="mt-5 max-w-2xl text-lg text-muted">
-        {t('hero.subtitle')}
+        {copy.trust}
       </p>
-      <div class="mt-8">
-        <WhatsAppButton lang={lang} />
+      <div
+        class="mt-4 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm font-bold text-white/40"
+      >
+        <span>EVENT&nbsp;PRO</span>
+        <span>BSD&nbsp;EXPO</span>
+        <span>NUSANTARA&nbsp;WEDDING</span>
+        <span>CORP&nbsp;GATHERING</span>
+        <span>LIVE&nbsp;STAGE</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  {
+    services.length > 0 && (
+      <section class="container-x py-16 md:py-24">
+        <div class="max-w-2xl">
+          <h2 class="text-3xl font-bold md:text-4xl">{copy.servicesTitle}</h2>
+          <p class="mt-4 text-muted">{copy.servicesIntro}</p>
+        </div>
+        <div class="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {services.map((e) => (
+            <ServiceCard
+              href={localizedPath(lang, '/services/' + slugOf(e.id))}
+              title={e.data.name}
+              summary={e.data.description}
+            />
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  <!-- FEATURED EQUIPMENT -->
+  {
+    equipment.length > 0 && (
+      <section class="border-y border-white/10 bg-surface/30">
+        <div class="container-x py-16 md:py-24">
+          <div class="flex flex-wrap items-end justify-between gap-4">
+            <div class="max-w-2xl">
+              <h2 class="text-3xl font-bold md:text-4xl">
+                {copy.equipmentTitle}
+              </h2>
+              <p class="mt-4 text-muted">{copy.equipmentIntro}</p>
+            </div>
+            <a
+              href={localizedPath(lang, '/equipment')}
+              class="inline-flex items-center gap-1 text-sm font-semibold text-accent hover:underline"
+            >
+              {copy.equipmentCta} <span aria-hidden="true">&rarr;</span>
+            </a>
+          </div>
+          <div class="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {equipment.map((e) => (
+              <a
+                href={localizedPath(lang, '/equipment')}
+                class="group flex flex-col overflow-hidden rounded-xl border border-white/10 bg-surface transition-colors hover:border-accent"
+              >
+                <div class="aspect-[4/3] overflow-hidden bg-bg">
+                  <Image
+                    src={e.data.image}
+                    alt={e.data.name}
+                    widths={[400, 800]}
+                    sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+                    class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
+                </div>
+                <div class="flex flex-1 flex-col p-4">
+                  <span class="text-xs font-medium uppercase tracking-wide text-accent">
+                    {e.data.category}
+                  </span>
+                  <h3 class="mt-1 font-bold text-white">{e.data.name}</h3>
+                  <p class="mt-3 text-sm font-semibold text-muted">
+                    Rp {e.data.pricePerDay.toLocaleString('id-ID')}
+                    {copy.perDay}
+                  </p>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <!-- EVENT TYPES -->
+  {
+    eventTypes.length > 0 && (
+      <section class="container-x py-16 md:py-24">
+        <div class="max-w-2xl">
+          <h2 class="text-3xl font-bold md:text-4xl">{copy.eventsTitle}</h2>
+          <p class="mt-4 text-muted">{copy.eventsIntro}</p>
+        </div>
+        <div class="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {eventTypes.map((e) => (
+            <EventTile
+              href={localizedPath(lang, '/events/' + slugOf(e.id))}
+              title={e.data.name}
+            />
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  <!-- GALLERY TEASER -->
+  <section class="border-y border-white/10 bg-surface/30">
+    <div
+      class="container-x flex flex-col items-start gap-6 py-16 md:flex-row md:items-center md:justify-between md:py-24"
+    >
+      <div class="max-w-2xl">
+        <h2 class="text-3xl font-bold md:text-4xl">{copy.galleryTitle}</h2>
+        <p class="mt-4 text-muted">{copy.galleryIntro}</p>
+      </div>
+      <a
+        href={localizedPath(lang, '/portfolio')}
+        class="inline-flex shrink-0 items-center gap-2 rounded-lg border border-white/20 px-5 py-3 text-sm font-semibold text-white transition-colors hover:border-accent hover:text-accent"
+      >
+        {copy.galleryCta} <span aria-hidden="true">&rarr;</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="container-x py-16 md:py-24">
+    <div class="max-w-2xl">
+      <h2 class="text-3xl font-bold md:text-4xl">{copy.testimonialsTitle}</h2>
+      <p class="mt-4 text-muted">{copy.testimonialsIntro}</p>
+    </div>
+    <div class="mt-10">
+      <Testimonials lang={lang} />
+    </div>
+  </section>
+
+  <!-- FINAL CTA BAND -->
+  <section class="border-t border-white/10">
+    <div class="container-x py-16 md:py-24">
+      <div
+        class="relative overflow-hidden rounded-2xl border border-white/10 bg-surface p-8 md:p-14"
+      >
+        <div
+          aria-hidden="true"
+          class="pointer-events-none absolute -top-24 -right-16 h-72 w-72 rounded-full bg-accent-grad opacity-20 blur-3xl"
+        >
+        </div>
+        <div class="relative max-w-2xl">
+          <h2
+            class="bg-accent-grad bg-clip-text text-3xl font-extrabold text-transparent md:text-4xl"
+          >
+            {copy.ctaTitle}
+          </h2>
+          <p class="mt-4 text-muted">{copy.ctaIntro}</p>
+          <div class="mt-8">
+            <WhatsAppButton lang={lang} message={ctaMessage} />
+          </div>
+        </div>
       </div>
     </div>
   </section>

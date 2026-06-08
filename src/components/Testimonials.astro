@@ -1,0 +1,81 @@
+---
+import type { Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+
+type Testimonial = {
+  quote: string;
+  name: string;
+  role: string;
+};
+
+const data: Record<Lang, Testimonial[]> = {
+  id: [
+    {
+      quote:
+        'LED screen-nya tajam dan terang banget, bahkan di siang hari. Tim teknisinya datang tepat waktu dan langsung tanggap saat ada perubahan rundown mendadak.',
+      name: 'Rizky Pratama',
+      role: 'Event Organizer, Jakarta',
+    },
+    {
+      quote:
+        'Kami sewa videotron dan sound system untuk wedding di Tangerang. Hasilnya melebihi ekspektasi, tamu undangan terkesan dan harganya sangat masuk akal.',
+      name: 'Dewi Anggraini',
+      role: 'Wedding Planner, BSD City',
+    },
+    {
+      quote:
+        'Sudah tiga kali pakai Maxindo LED untuk gathering perusahaan. Setup rapi, kabel tertata, dan teknisi standby penuh selama acara. Recommended.',
+      name: 'Andi Wijaya',
+      role: 'HR Manager, Perusahaan FMCG',
+    },
+  ],
+  en: [
+    {
+      quote:
+        'The LED screen was razor-sharp and bright even in daylight. The crew arrived on time and adapted instantly when our rundown changed last minute.',
+      name: 'Rizky Pratama',
+      role: 'Event Organizer, Jakarta',
+    },
+    {
+      quote:
+        'We rented a videotron and sound system for a wedding in Tangerang. The result exceeded our expectations, guests were impressed, and the price was very fair.',
+      name: 'Dewi Anggraini',
+      role: 'Wedding Planner, BSD City',
+    },
+    {
+      quote:
+        'We have used Maxindo LED three times for company gatherings. Clean setup, tidy cabling, and a technician on standby the entire event. Highly recommended.',
+      name: 'Andi Wijaya',
+      role: 'HR Manager, FMCG Company',
+    },
+  ],
+};
+
+const items = data[lang];
+---
+
+<div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+  {
+    items.map((item) => (
+      <figure class="flex h-full flex-col rounded-xl border border-white/10 bg-surface p-6">
+        <div class="mb-4 text-accent" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M7.17 6A5.17 5.17 0 0 0 2 11.17V18h6.83v-6.83H5.5A1.67 1.67 0 0 1 7.17 9.5V6zm10 0A5.17 5.17 0 0 0 12 11.17V18h6.83v-6.83H15.5a1.67 1.67 0 0 1 1.67-1.67V6z" />
+          </svg>
+        </div>
+        <blockquote class="flex-1 text-sm leading-relaxed text-muted">
+          “{item.quote}”
+        </blockquote>
+        <figcaption class="mt-5 border-t border-white/10 pt-4">
+          <div class="font-semibold text-white">{item.name}</div>
+          <div class="text-xs text-muted">{item.role}</div>
+        </figcaption>
+      </figure>
+    ))
+  }
+</div>
