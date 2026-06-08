@@ -28,7 +28,7 @@ const alt = lang === 'id' ? 'Logo klien Maxindo LED' : 'Maxindo LED client logo'
   <div class="space-y-3">
     {belts.map((belt, i) => (
       <div class="belt">
-        <div class={`belt-track${i % 2 === 1 ? ' rev' : ''}`} style={`--dur:${52 + i * 9}s`}>
+        <div class={`belt-track${i % 2 === 1 ? ' rev' : ''}`} style={`--dur:${34 + i * 6}s`}>
           {[...belt, ...belt].map((src) => (
             <span class="chip"><img src={src} alt={alt} loading="lazy" decoding="async" /></span>
           ))}
@@ -61,5 +61,4 @@ const alt = lang === 'id' ? 'Logo klien Maxindo LED' : 'Maxindo LED client logo'
   .chip img { max-height: 36px; max-width: 130px; width: auto; height: auto; display: block; }
   @keyframes belt-left { from { transform: translateX(0); } to { transform: translateX(-50%); } }
   @keyframes belt-right { from { transform: translateX(-50%); } to { transform: translateX(0); } }
-  @media (prefers-reduced-motion: reduce) { .belt-track { animation: none; } }
 </style>
