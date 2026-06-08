@@ -4,6 +4,7 @@ import { Image } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
 import LocalBusiness from '../../components/schema/LocalBusiness.astro';
 import Hero from '../../components/Hero.astro';
+import ClientMarquee from '../../components/ClientMarquee.astro';
 import ServiceCard from '../../components/ServiceCard.astro';
 import EventTile from '../../components/EventTile.astro';
 import Testimonials from '../../components/Testimonials.astro';
@@ -104,25 +105,8 @@ const description = copy.meta;
   <!-- HERO -->
   <Hero lang={lang} title={t('hero.title')} subtitle={t('hero.subtitle')} />
 
-  <!-- TRUST STRIP -->
-  <section class="border-b border-white/10 bg-surface/40">
-    <div class="container-x py-6">
-      <p
-        class="text-center text-xs font-medium uppercase tracking-widest text-muted"
-      >
-        {copy.trust}
-      </p>
-      <div
-        class="mt-4 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm font-bold text-white/40"
-      >
-        <span>EVENT&nbsp;PRO</span>
-        <span>BSD&nbsp;EXPO</span>
-        <span>NUSANTARA&nbsp;WEDDING</span>
-        <span>CORP&nbsp;GATHERING</span>
-        <span>LIVE&nbsp;STAGE</span>
-      </div>
-    </div>
-  </section>
+  <!-- CLIENT LOGO MARQUEE -->
+  <ClientMarquee lang={lang} />
 
   <!-- SERVICES -->
   {

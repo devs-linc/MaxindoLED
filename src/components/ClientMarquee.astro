@@ -1,0 +1,60 @@
+---
+import type { Lang } from '../i18n/ui';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+
+// Client logos sliced from the original maxindoled.com "Our Clients" board,
+// grouped into three scrolling belts (alternating direction).
+const belts = [
+  ['/clients/row-1.webp', '/clients/row-2.webp', '/clients/row-3.webp'],
+  ['/clients/row-4.webp', '/clients/row-5.webp'],
+  ['/clients/row-6.webp', '/clients/row-7.webp'],
+];
+
+const heading = lang === 'id'
+  ? 'Dipercaya oleh 70+ brand & instansi ternama'
+  : 'Trusted by 70+ leading brands & institutions';
+const sub = lang === 'id'
+  ? 'Dari kementerian dan BUMN hingga perusahaan multinasional — mereka mempercayakan acaranya pada Maxindo LED.'
+  : 'From ministries and state enterprises to multinational companies — they trust their events to Maxindo LED.';
+---
+
+<section class="container-x py-14 md:py-20">
+  <div class="mx-auto mb-8 max-w-2xl text-center">
+    <h2 class="text-2xl font-bold md:text-3xl">{heading}</h2>
+    <p class="mt-3 text-muted">{sub}</p>
+  </div>
+
+  <div class="belt-mask rounded-2xl border border-white/10 bg-white px-2 py-5 md:py-7">
+    {belts.map((imgs, i) => (
+      <div class="belt">
+        <div class={`belt-track${i % 2 === 1 ? ' rev' : ''}`}>
+          {[...imgs, ...imgs].map((src) => (
+            <img src={src} alt={lang === 'id' ? 'Logo klien Maxindo LED' : 'Maxindo LED client logo'} height="40" loading="lazy" decoding="async" />
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .belt { overflow: hidden; }
+  .belt + .belt { margin-top: 12px; }
+  .belt-track {
+    display: flex;
+    width: max-content;
+    align-items: center;
+    animation: belt-left 60s linear infinite;
+  }
+  .belt-track.rev { animation-name: belt-right; animation-duration: 75s; }
+  .belt-track:hover { animation-play-state: paused; }
+  .belt-track img { height: 40px; width: auto; flex: none; margin-right: 44px; }
+  @keyframes belt-left { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @keyframes belt-right { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+  .belt-mask {
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  }
+  @media (prefers-reduced-motion: reduce) { .belt-track { animation: none; } }
+</style>
