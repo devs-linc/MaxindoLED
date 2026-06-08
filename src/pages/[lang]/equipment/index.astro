@@ -90,6 +90,12 @@ const crumbs = [
       <span class="eyebrow">{copy.eyebrow}</span>
       <h1 class="section-title mt-5">{copy.h1}</h1>
       <p class="lead mt-5">{copy.intro}</p>
+      <div class="mt-7 flex flex-wrap gap-3">
+        <a class="btn-primary" href={localizedPath(lang, '/calculator')}>
+          {lang === 'id' ? 'Hitung Estimasi Sewa' : 'Calculate Rental Estimate'}
+          <span aria-hidden="true">&rarr;</span>
+        </a>
+      </div>
     </div>
 
     <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">

@@ -234,6 +234,25 @@ const description = copy.meta;
     )
   }
 
+  <!-- CALCULATOR CTA -->
+  <section class="container-x py-10 md:py-14">
+    <div class="overflow-hidden rounded-3xl border border-line bg-cream p-8 md:p-12">
+      <div class="flex flex-col items-start gap-6 md:flex-row md:items-center md:justify-between">
+        <div class="max-w-xl">
+          <span class="icon-badge amber mb-4">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="11" x2="8.01" y2="11"/><line x1="12" y1="11" x2="12.01" y2="11"/><line x1="16" y1="11" x2="16.01" y2="11"/><line x1="8" y1="15" x2="8.01" y2="15"/><line x1="12" y1="15" x2="12.01" y2="15"/><line x1="16" y1="15" x2="16" y2="18"/><line x1="8" y1="18" x2="12" y2="18"/></svg>
+          </span>
+          <h2 class="section-title">{lang === 'id' ? 'Hitung Estimasi Biaya Sewa' : 'Estimate Your Rental Cost'}</h2>
+          <p class="lead mt-3">{lang === 'id' ? 'Gunakan kalkulator sewa kami untuk memperkirakan biaya peralatan acara Anda dalam hitungan detik, lalu kirim penawarannya langsung ke WhatsApp.' : 'Use our rental calculator to estimate your event equipment cost in seconds, then send the quote straight to WhatsApp.'}</p>
+        </div>
+        <a class="btn-primary shrink-0" href={localizedPath(lang, '/calculator')}>
+          {lang === 'id' ? 'Buka Kalkulator' : 'Open Calculator'}
+          <span aria-hidden="true">&rarr;</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
   <!-- EVENT TYPES -->
   {
     eventTypes.length > 0 && (
