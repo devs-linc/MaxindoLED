@@ -1,0 +1,36 @@
+---
+import { SITE } from '../../consts';
+
+const ld = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  name: SITE.name,
+  url: SITE.url,
+  telephone: '+' + SITE.whatsapp,
+  email: SITE.email,
+  image: new URL('/og-default.jpg', SITE.url).href,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: SITE.address.street,
+    addressLocality: SITE.address.locality,
+    addressRegion: SITE.address.region,
+    postalCode: SITE.address.postalCode,
+    addressCountry: SITE.address.country,
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: SITE.geo.lat,
+    longitude: SITE.geo.lng,
+  },
+  areaServed: ['Jakarta', 'Tangerang', 'Banten'],
+  sameAs: [
+    SITE.social.instagram,
+    SITE.social.facebook,
+    SITE.social.tiktok,
+    SITE.social.youtube,
+  ],
+  openingHours: 'Mo-Su 08:00-22:00',
+};
+---
+
+<script is:inline type="application/ld+json" set:html={JSON.stringify(ld)} />

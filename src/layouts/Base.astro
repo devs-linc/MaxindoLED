@@ -1,0 +1,51 @@
+---
+import '../styles/global.css';
+import Seo from '../components/Seo.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import WhatsAppFloat from '../components/WhatsAppFloat.astro';
+import type { Lang } from '../i18n/ui';
+
+interface Props {
+  title: string;
+  description: string;
+  lang: Lang;
+  image?: string;
+  noindex?: boolean;
+}
+
+const { title, description, lang, image, noindex = false } = Astro.props;
+
+const htmlLang = lang === 'id' ? 'id-ID' : 'en-US';
+
+// Locale-less path for SEO hreflang construction.
+const path = Astro.url.pathname.replace(/^\/(id|en)(?=\/|$)/, '') || '/';
+---
+
+<!doctype html>
+<html lang={htmlLang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="generator" content={Astro.generator} />
+    <Seo
+      title={title}
+      description={description}
+      image={image}
+      lang={lang}
+      path={path}
+      noindex={noindex}
+    />
+    <slot name="head" />
+  </head>
+  <body>
+    <Header lang={lang} />
+    <main>
+      <slot />
+    </main>
+    <Footer lang={lang} />
+    <WhatsAppFloat />
+  </body>
+</html>

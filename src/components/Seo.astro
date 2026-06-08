@@ -1,0 +1,62 @@
+---
+import { SITE } from '../consts';
+import type { Lang } from '../i18n/ui';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  lang: Lang;
+  path: string;
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description,
+  image = '/og-default.jpg',
+  lang,
+  path,
+  noindex = false,
+} = Astro.props;
+
+// Absolute canonical from the current request URL.
+const canonical = new URL(Astro.url.pathname, Astro.site ?? SITE.url).href;
+const ogImage = new URL(image, Astro.site ?? SITE.url).href;
+
+// Build reciprocal hreflang URLs by swapping the /id|/en prefix on the path.
+// `path` is the locale-less path (e.g. "/services" or "/").
+const normalized = path === '/' ? '/' : path.replace(/\/$/, '');
+const hrefId = new URL(`/id${normalized === '/' ? '/' : normalized}`, Astro.site ?? SITE.url).href;
+const hrefEn = new URL(`/en${normalized === '/' ? '/' : normalized}`, Astro.site ?? SITE.url).href;
+
+const ogLocale = lang === 'id' ? 'id_ID' : 'en_US';
+const ogLocaleAlt = lang === 'id' ? 'en_US' : 'id_ID';
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+
+{noindex && <meta name="robots" content="noindex, nofollow" />}
+
+<!-- hreflang -->
+<link rel="alternate" hreflang="id" href={hrefId} />
+<link rel="alternate" hreflang="en" href={hrefEn} />
+<link rel="alternate" hreflang="x-default" href={hrefId} />
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content={SITE.name} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:locale" content={ogLocale} />
+<meta property="og:locale:alternate" content={ogLocaleAlt} />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />

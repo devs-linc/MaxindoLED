@@ -1,0 +1,19 @@
+---
+import { SITE } from '../../consts';
+
+const ld = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: SITE.name,
+  url: SITE.url,
+  logo: new URL('/og-default.jpg', SITE.url).href,
+  sameAs: [
+    SITE.social.instagram,
+    SITE.social.facebook,
+    SITE.social.tiktok,
+    SITE.social.youtube,
+  ],
+};
+---
+
+<script is:inline type="application/ld+json" set:html={JSON.stringify(ld)} />

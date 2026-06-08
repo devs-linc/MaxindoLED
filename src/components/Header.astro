@@ -1,0 +1,70 @@
+---
+import { waLink } from '../consts';
+import { useTranslations, localizedPath } from '../i18n/utils';
+import type { Lang, UIKey } from '../i18n/ui';
+import LanguageSwitcher from './LanguageSwitcher.astro';
+import WhatsAppButton from './WhatsAppButton.astro';
+import MobileNav from './islands/MobileNav';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+// path is the locale-less path; localizedPath adds the prefix.
+const navItems: { key: UIKey; path: string }[] = [
+  { key: 'nav.home', path: '/' },
+  { key: 'nav.services', path: '/services' },
+  { key: 'nav.equipment', path: '/equipment' },
+  { key: 'nav.events', path: '/events' },
+  { key: 'nav.portfolio', path: '/portfolio' },
+  { key: 'nav.articles', path: '/articles' },
+  { key: 'nav.about', path: '/about' },
+  { key: 'nav.contact', path: '/contact' },
+];
+
+const links = navItems.map((item) => ({
+  href: localizedPath(lang, item.path),
+  label: t(item.key),
+}));
+
+const waMessage =
+  lang === 'id'
+    ? 'Halo Maxindo LED, saya ingin bertanya tentang penyewaan peralatan acara.'
+    : 'Hello Maxindo LED, I would like to ask about event equipment rental.';
+const waHref = waLink(waMessage);
+---
+
+<header
+  class="sticky top-0 z-40 border-b border-white/10 backdrop-blur"
+  style="background: color-mix(in srgb, var(--color-surface) 80%, transparent);"
+>
+  <div class="container-x flex h-16 items-center justify-between gap-4">
+    <a href={localizedPath(lang, '/')} class="text-xl font-extrabold tracking-tight">
+      MAXINDO <span class="text-accent">LED</span>
+    </a>
+
+    <nav class="hidden items-center gap-5 md:flex">
+      {
+        links.map((link) => (
+          <a
+            href={link.href}
+            class="text-sm font-medium text-muted transition-colors hover:text-white"
+          >
+            {link.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="flex items-center gap-3">
+      <LanguageSwitcher lang={lang} />
+      <div class="hidden md:block">
+        <WhatsAppButton lang={lang} />
+      </div>
+      <MobileNav client:idle links={links} waHref={waHref} waLabel={t('cta.whatsapp')} />
+    </div>
+  </div>
+</header>

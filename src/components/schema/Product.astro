@@ -1,0 +1,42 @@
+---
+import { SITE } from '../../consts';
+
+interface Props {
+  name: string;
+  description: string;
+  image: string;
+  price: number | string;
+  sku: string;
+  category: string;
+}
+
+const { name, description, image, price, sku, category } = Astro.props;
+
+const ld = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name,
+  description,
+  image,
+  sku,
+  category,
+  brand: {
+    '@type': 'Brand',
+    name: SITE.name,
+  },
+  offers: {
+    '@type': 'Offer',
+    priceCurrency: 'IDR',
+    price: String(price),
+    availability: 'https://schema.org/InStock',
+    businessFunction: 'https://schema.org/LeaseOut',
+    url: SITE.url,
+    seller: {
+      '@type': 'Organization',
+      name: SITE.name,
+    },
+  },
+};
+---
+
+<script is:inline type="application/ld+json" set:html={JSON.stringify(ld)} />

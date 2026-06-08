@@ -1,0 +1,42 @@
+---
+import Base from '../../layouts/Base.astro';
+import WhatsAppButton from '../../components/WhatsAppButton.astro';
+import LocalBusiness from '../../components/schema/LocalBusiness.astro';
+import { useTranslations } from '../../i18n/utils';
+import type { Lang } from '../../i18n/ui';
+
+export function getStaticPaths() {
+  return [{ params: { lang: 'id' } }, { params: { lang: 'en' } }];
+}
+
+const lang = Astro.params.lang as Lang;
+const t = useTranslations(lang);
+
+const title = `${t('hero.title')} | Maxindo LED`;
+const description = t('hero.subtitle');
+---
+
+<Base title={title} description={description} lang={lang}>
+  <LocalBusiness slot="head" />
+
+  <section class="container-x py-20 md:py-28">
+    <div class="max-w-3xl">
+      <span
+        class="inline-block rounded-full border border-accent/40 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-accent"
+      >
+        Tangerang &amp; Jakarta
+      </span>
+      <h1
+        class="mt-5 bg-accent-grad bg-clip-text text-4xl font-extrabold leading-tight text-transparent md:text-6xl"
+      >
+        {t('hero.title')}
+      </h1>
+      <p class="mt-5 max-w-2xl text-lg text-muted">
+        {t('hero.subtitle')}
+      </p>
+      <div class="mt-8">
+        <WhatsAppButton lang={lang} />
+      </div>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,80 @@
+---
+import { SITE } from '../consts';
+import { useTranslations, localizedPath } from '../i18n/utils';
+import type { Lang, UIKey } from '../i18n/ui';
+import LocalBusiness from './schema/LocalBusiness.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const navItems: { key: UIKey; path: string }[] = [
+  { key: 'nav.services', path: '/services' },
+  { key: 'nav.equipment', path: '/equipment' },
+  { key: 'nav.events', path: '/events' },
+  { key: 'nav.portfolio', path: '/portfolio' },
+  { key: 'nav.articles', path: '/articles' },
+  { key: 'nav.about', path: '/about' },
+  { key: 'nav.contact', path: '/contact' },
+];
+
+const year = new Date().getFullYear();
+---
+
+<footer class="mt-20 border-t border-white/10" style="background: var(--color-surface);">
+  <div class="container-x grid gap-10 py-12 md:grid-cols-3">
+    <div>
+      <p class="text-xl font-extrabold tracking-tight">
+        MAXINDO <span class="text-accent">LED</span>
+      </p>
+      <address class="mt-4 not-italic text-sm leading-relaxed text-muted">
+        {SITE.address.street}<br />
+        {SITE.address.locality}<br />
+        {SITE.address.region} {SITE.address.postalCode}
+      </address>
+      <p class="mt-3 text-sm text-muted">
+        <a class="hover:text-white" href={`tel:+${SITE.whatsapp}`}>{SITE.phoneDisplay}</a><br />
+        <a class="hover:text-white" href={`mailto:${SITE.email}`}>{SITE.email}</a>
+      </p>
+    </div>
+
+    <div>
+      <p class="mb-3 text-sm font-semibold uppercase tracking-wide text-white">Menu</p>
+      <ul class="space-y-2 text-sm">
+        {
+          navItems.map((item) => (
+            <li>
+              <a
+                href={localizedPath(lang, item.path)}
+                class="text-muted transition-colors hover:text-white"
+              >
+                {t(item.key)}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div>
+      <p class="mb-3 text-sm font-semibold uppercase tracking-wide text-white">Social</p>
+      <ul class="space-y-2 text-sm">
+        <li><a class="text-muted hover:text-white" href={SITE.social.instagram} rel="noopener" target="_blank">Instagram</a></li>
+        <li><a class="text-muted hover:text-white" href={SITE.social.facebook} rel="noopener" target="_blank">Facebook</a></li>
+        <li><a class="text-muted hover:text-white" href={SITE.social.tiktok} rel="noopener" target="_blank">TikTok</a></li>
+        <li><a class="text-muted hover:text-white" href={SITE.social.youtube} rel="noopener" target="_blank">YouTube</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="border-t border-white/10">
+    <div class="container-x py-5 text-sm text-muted">
+      &copy; {year} {SITE.name}. All rights reserved.
+    </div>
+  </div>
+
+  <LocalBusiness />
+</footer>

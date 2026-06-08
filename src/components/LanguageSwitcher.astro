@@ -1,0 +1,23 @@
+---
+import type { Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const other: Lang = lang === 'id' ? 'en' : 'id';
+
+// Swap the /id|/en prefix on the current path to point at the other locale.
+const pathname = Astro.url.pathname;
+const swapped = pathname.replace(/^\/(id|en)(?=\/|$)/, `/${other}`);
+const href = /^\/(id|en)(\/|$)/.test(pathname) ? swapped : `/${other}${pathname}`;
+---
+
+<a
+  href={href}
+  class="rounded border border-white/15 px-2 py-1 text-sm font-medium text-muted transition-colors hover:border-accent hover:text-white"
+  hreflang={other}
+>
+  {other.toUpperCase()}
+</a>

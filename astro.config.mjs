@@ -7,9 +7,21 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
+  site: 'https://maxindoled.com',
+  output: 'static',
   vite: {
-    plugins: [tailwindcss()]
+    plugins: [tailwindcss()],
   },
-
-  integrations: [preact(), sitemap()]
+  integrations: [
+    preact(),
+    sitemap({
+      i18n: {
+        defaultLocale: 'id',
+        locales: {
+          id: 'id-ID',
+          en: 'en-US',
+        },
+      },
+    }),
+  ],
 });

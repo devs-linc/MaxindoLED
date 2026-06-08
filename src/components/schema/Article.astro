@@ -1,0 +1,37 @@
+---
+import { SITE } from '../../consts';
+
+interface Props {
+  title: string;
+  datePublished: string | Date;
+  image: string;
+  author?: string;
+}
+
+const { title, datePublished, image, author } = Astro.props;
+
+const published =
+  datePublished instanceof Date ? datePublished.toISOString() : datePublished;
+
+const ld = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: title,
+  image,
+  datePublished: published,
+  author: {
+    '@type': author ? 'Person' : 'Organization',
+    name: author ?? SITE.name,
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: SITE.name,
+    logo: {
+      '@type': 'ImageObject',
+      url: new URL('/og-default.jpg', SITE.url).href,
+    },
+  },
+};
+---
+
+<script is:inline type="application/ld+json" set:html={JSON.stringify(ld)} />
